@@ -1,0 +1,9 @@
+<%= provide(:title, "Create User")%>
+<h1>New User</h1>
+
+<%= form_with(model: @user, local: true) do |f|%>
+  <%= f.label :name %>
+  <%= f.text_field :name, class: 'form_control'%>
+
+  <%= f.submit "Submit", class: "btn btn-primary"%>
+<% end%>

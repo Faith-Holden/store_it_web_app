@@ -1,0 +1,9 @@
+<%= provide(:title, "Create Location")%>
+<h1>New Location</h1>
+
+<%= form_with(model: @location, local: true) do |f|%>
+  <%= f.label :name %>
+  <%= f.text_field :name, class: 'form_control'%>
+
+  <%= f.submit "Submit", class: "btn btn-primary"%>
+<% end%>
