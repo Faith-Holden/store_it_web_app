@@ -2,6 +2,8 @@
 
 one:
   name: MyString
+  access_group_id: 1
 
 two:
-  name: MyString
+  name: MyString1
+  access_group_id: 1

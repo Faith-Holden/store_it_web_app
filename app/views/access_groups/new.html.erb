@@ -1,0 +1,9 @@
+<%= provide(:title, "Access Group")%>
+<h1>New Access Group</h1>
+
+<%= form_with(model: @access_group, local: true) do |f|%>
+  <%= f.label :name %>
+  <%= f.text_field :name, class: 'form_control'%>
+
+  <%= f.submit "Submit", class: "btn btn-primary"%>
+<% end%>

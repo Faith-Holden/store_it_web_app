@@ -13,16 +13,16 @@ class ItemsController < ApplicationController
   end
 
   def show
-    if Item.any?
-      @item = Item.find(params[:id])
-    else
-      redirect_to new_item_path
-    end
+    @item = Item.find(params[:id])
+  end
+
+  def index
+    @items = Item.all
   end
 
   private
   def item_params
     params.require(:item).
-            permit(:item_name)
+            permit(:name, :access_group_id, :location_id)
   end
 end
