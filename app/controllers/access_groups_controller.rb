@@ -1,5 +1,5 @@
 class AccessGroupsController < ApplicationController
-
+  before_action :logged_in_user, only: [:create, :index]
   def new
     # redirect unless user has admin access to the group that they are trying to subgroup
     @access_group = AccessGroup.new
