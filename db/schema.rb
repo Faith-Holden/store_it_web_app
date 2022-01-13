@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_08_184121) do
+ActiveRecord::Schema.define(version: 2022_01_10_224830) do
 
   create_table "access_groups", force: :cascade do |t|
     t.string "name"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 2022_01_08_184121) do
     t.boolean "activated", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "activation_digest"
   end
 
   add_foreign_key "items", "access_groups"

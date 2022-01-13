@@ -1,9 +1,5 @@
-<%= provide(:title, "Create User")%>
+<%= provide(:title, "Create profile")%>
+<%= provide(:button_text, "Create Profile")%>
 <h1>New User</h1>
 
-<%= form_with(model: @user, local: true) do |f|%>
-  <%= f.label :name %>
-  <%= f.text_field :name, class: 'form_control'%>
-
-  <%= f.submit "Submit", class: "btn btn-primary"%>
-<% end%>
+<%= render 'users/user_form'%>

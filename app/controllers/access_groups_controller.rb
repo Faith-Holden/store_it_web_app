@@ -17,7 +17,7 @@ class AccessGroupsController < ApplicationController
   end
 
   def show
-    #should redirect unless signed in with view+ perms
+    #should redirect unless signed in with view + perms
     @access_group = AccessGroup.find(params[:id])
   end
 
