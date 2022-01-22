@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
-  include SessionsHelper
 
+  skip_before_action :require_login
 
   def new
   end

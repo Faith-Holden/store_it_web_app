@@ -1,24 +1,43 @@
 class ItemsController < ApplicationController
-  before_action :logged_in_user, only:[:create, :index]
   def new
-    @item = Item.new
+    if @current_user.is_sys_admin?
+      @item = Item.new
+      @current_user = current_user
+      @parent_locations = Location.all 
+    else
+      flash[:danger]= "Only the System Administrator can add items at this time."
+      redirect_to root_url
+    end
   end
 
   def create
-    @item = Item.new(item_params)
-    if @item.save
-      redirect_to @item
+    if @current_user.is_sys_admin?
+      @item = Item.new(item_params)
+      if @item.save
+        redirect_to @item
+      else
+        render 'new'
+      end
     else
-      render 'new'
+      redirect_to root_url
     end
   end
 
   def show
-    @item = Item.find(params[:id])
+    if @current_user.items.include?(Item.find_by(id: params[:id]))
+      @item = Item.find(params[:id])
+    else
+      flash[:danger]= "Item not available to view!"
+      redirect_to root_url
+    end
   end
 
   def index
-    @items = Item.all
+    if current_user.is_sys_admin?
+      @items = Item.all
+    else
+      @items = current_user.items
+    end
   end
 
   private

@@ -1,10 +1,9 @@
-class Locations < ActiveRecord::Migration[6.1]
+class CreateLocations < ActiveRecord::Migration[6.1]
   def change
     create_table :locations do |t|
       t.string :name
       t.text :description
-      t.integer :parent
-      t.references :access_group, null: false, foreign_key: true
+      t.integer :parent_id
     
       t.timestamps
     end

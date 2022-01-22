@@ -1,11 +1,16 @@
 class UsersController < ApplicationController
-  include SessionsHelper
 
-  before_action :logged_in_user, only: [:show, :index]
+  skip_before_action :require_login, only: [:create, :new]
 
   def create
     @user = User.new(user_params)
+    
     if @user.save
+      UserPermission.new( user_id: @user.id,
+        is_sys_admin: false,
+        can_crud_items: false,
+        can_crud_locations_with_parent: false,
+        can_crud_locations_no_parent: false).save
       @user.send_activation_email
       flash[:info]= "Please check your email for an activation link."
       redirect_to root_url
@@ -19,7 +24,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find_by(params[:id])
+    @user = User.find(params[:id])
     unless @user.activated?
       flash[:warning] = "Account not activated."
       redirect_to root_url

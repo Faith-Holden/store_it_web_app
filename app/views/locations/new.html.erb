@@ -5,8 +5,12 @@
   <%= f.label :name %>
   <%= f.text_field :name, class: 'form_control'%>
 
-  <%= f.label :access_group_id%>
-  <%= f.text_field :access_group_id, class: 'form_control'%>
+  <%= f.label :parent%>
+  <% if @current_user.can_crud_root_location?%>
+    <%= f.collection_select :parent, @parent_locations,:id,:name, include_blank: true %>
+  <% else %>
+    <%= f.collection_select :parent,@parent_locations,:id,:name %>
+  <% end %>
 
   <%= f.submit "Submit", class: "btn btn-primary"%>
 <% end%>

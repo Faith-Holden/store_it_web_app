@@ -7,7 +7,7 @@
         <li><%= link_to "My Groups", access_groups_path%></li>
         <li><%= link_to "My Items", items_path%></li>
         <li><%= link_to "My Locations", locations_path%></li>
-        <li><%= link_to "Account", "#"%></li>
+        <li><%= link_to "Account", @current_user%></li>
         <li><%= link_to "Log Out", logout_path, method: :delete%></li>
       <% else %>
         <li><%= link_to "Log In", login_path%></li>

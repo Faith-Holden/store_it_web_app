@@ -1,11 +1,13 @@
 class AccessGroupsController < ApplicationController
-  before_action :logged_in_user, only:[:create, :index]
   def new
     # redirect unless user has admin access to the group that they are trying to subgroup
     @access_group = AccessGroup.new
+    @current_user = current_user
+    @access_groups = current_user.groups_user_can_crud_child
   end
 
   def create
+    
     # should redirect under same conditions as new
     # parent should be originating group by default
     @access_group = AccessGroup.new(group_params)
@@ -19,6 +21,7 @@ class AccessGroupsController < ApplicationController
   def show
     #should redirect unless signed in with view + perms
     @access_group = AccessGroup.find(params[:id])
+    @locations = @access_group.locations
   end
 
   def index
@@ -28,7 +31,7 @@ class AccessGroupsController < ApplicationController
 
   private 
     def group_params
-      params.require(:access_group).permit(:name, :parent)
+      params.require(:access_group).permit(:name, :parent_id)
     end
 
 end

@@ -13,7 +13,13 @@ Rails.application.routes.draw do
 
   resources :account_activations, only: [:edit]
   resources :items
-  resources :locations
+  resources :locations do
+    member do
+      get :items
+      get :child_locations
+    end
+  end
+
   resources :users
   resources :access_groups
   resources :user_accesses

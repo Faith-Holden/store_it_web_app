@@ -1,33 +1,63 @@
 class LocationsController < ApplicationController
   def create
-    # should add location parent
-    # should make access group be access group it was created from
-    @location = Location.new(location_params)
-    if @location.save
-      redirect_to @location
+    if @current_user.is_sys_admin?
+      @location = Location.new(location_params)
+      if @location.save
+        redirect_to @location
+      else
+        render 'new'
+      end
     else
-      render 'new'
+      redirect_to root_url
     end
   end
 
   def new
-    # should redirect if not logged in/not with access group perms
-    @location = Location.new
+    if @current_user.is_sys_admin?
+      @location = Location.new
+      @current_user = current_user
+      @parent_locations = Location.all 
+    else
+      flash[:danger]= "Only the System Administrator can add locations at this time."
+      redirect_to root_url
+    end
   end
 
   def show
-    # show specified page or reroute to sign in if not signed in
-    @location = Location.find(params[:id])
+    if @current_user.is_sys_admin? || @current_user.locations.include?(Location.find_by(id: params[:id]))
+      @location = Location.find(params[:id])
+    else
+      flash[:danger]= "Location not available!"
+      redirect_to root_url
+    end
   end
 
   def index
-     # should show locations that a signed in user has access to, or redirect to sign-in page
-    @locations = Location.all
+    if current_user.is_sys_admin?
+      @locations = Location.all
+    else
+      @locations = @current_user.locations
+    end
+  end
+
+  def items
+    @location = Location.find(params[:id])
+    if @current_user.locations_with_visible_items.include?(@location)
+      @items = @location.items
+    else
+      flash[:warning]= "Items in this location are not available to view."
+      redirect_to location_url(@location)
+    end
+  end
+
+  def child_locations
+    @parent_location = Location.find(params[:id])
+    @child_locations = @current_user.visible_child_locations(@parent_location)
   end
 
 
   private
     def location_params
-      params.require(:location).permit(:name, :access_group_id)
+      params.require(:location).permit(:name, :parent)
     end
 end
