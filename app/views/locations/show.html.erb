@@ -6,3 +6,15 @@
 <div class= "jumbotron jumbotron-fluid">
   Parent Location ID: <%=@location.parent_id%>
 </div>
+
+<div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Sub-Locations", child_locations_location_path %>
+</div>
+
+<div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Items", items_location_path %>
+</div>
+
+<div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Access Groups", access_groups_location_path %>
+</div>

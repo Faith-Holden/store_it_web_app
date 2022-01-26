@@ -52,12 +52,17 @@ class LocationsController < ApplicationController
 
   def child_locations
     @parent_location = Location.find(params[:id])
-    @child_locations = @current_user.visible_child_locations(@parent_location)
+    @child_locations = @parent_location.child_locations.visible_to(@current_user)
+  end
+
+  def access_groups
+    @location = Location.find(params[:id])
+    @access_groups = @location.visible_groups(@current_user)
   end
 
 
   private
     def location_params
-      params.require(:location).permit(:name, :parent)
+      params.require(:location).permit(:name, :parent_id)
     end
 end

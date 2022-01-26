@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
   def new
-    if @current_user.is_sys_admin?
+    if current_user.is_sys_admin?
       @item = Item.new
       @current_user = current_user
       @parent_locations = Location.all 
@@ -24,7 +24,7 @@ class ItemsController < ApplicationController
   end
 
   def show
-    if @current_user.items.include?(Item.find_by(id: params[:id]))
+    if @current_user.is_sys_admin? || @current_user.items.include?(Item.find_by(id: params[:id]))
       @item = Item.find(params[:id])
     else
       flash[:danger]= "Item not available to view!"
@@ -33,16 +33,27 @@ class ItemsController < ApplicationController
   end
 
   def index
-    if current_user.is_sys_admin?
+    if @current_user.is_sys_admin?
       @items = Item.all
     else
-      @items = current_user.items
+      @items = @current_user.items
     end
   end
 
+  def locations
+    @item = Item.find(params[:id])
+    if @current_user.is_sys_admin?
+      @locations = @item.locations
+    else
+      @locations = @item.visible_locations(@current_user)
+    end
+  end
+
+
+
   private
   def item_params
-    params.require(:item).
-            permit(:name, :access_group_id, :location_id)
+    params.require(:item)
+          .permit(:name, :access_group_id, :location_id)
   end
 end

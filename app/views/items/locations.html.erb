@@ -1,0 +1,6 @@
+<% provide(:title, "Locations")%>
+<h1>Location with Item: <%= "#{@item.name}"%></h1>
+<%= link_to "Add a Location", "#"%>
+<ul>
+  <%= render @locations%>
+<ul>

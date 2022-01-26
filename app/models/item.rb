@@ -4,7 +4,17 @@ class Item < ApplicationRecord
   has_many :item_locations
   has_many :locations, through: :item_locations
    
+  def visible_locations(user)
+    locations = Array.new
+    user_locations = user.locations
 
+    self.locations.each do |location|
+      if user_locations.include?(location)
+        locations << location
+      end
+    end
+    locations = locations.uniq
+  end
 
   # def quantity
   #   quantity = 0

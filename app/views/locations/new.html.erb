@@ -7,10 +7,11 @@
 
   <%= f.label :parent%>
   <% if @current_user.can_crud_root_location?%>
-    <%= f.collection_select :parent, @parent_locations,:id,:name, include_blank: true %>
+    <%= f.collection_select :parent_id, @parent_locations, :id, :name, include_blank: true %>
   <% else %>
-    <%= f.collection_select :parent,@parent_locations,:id,:name %>
+    <%= f.collection_select :parent_id, @parent_locations,:id,:name %>
   <% end %>
+
 
   <%= f.submit "Submit", class: "btn btn-primary"%>
 <% end%>

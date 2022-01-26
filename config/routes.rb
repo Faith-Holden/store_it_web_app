@@ -10,18 +10,30 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
 
-
   resources :account_activations, only: [:edit]
-  resources :items
+
+  resources :items do
+    member do
+      get :locations
+      get :access_groups #controller method not yet defined
+    end
+  end
   resources :locations do
     member do
       get :items
       get :child_locations
+      get :access_groups
+    end
+  end
+  resources :users
+  resources :access_groups do
+    member do
+      get :items
+      get :locations
+      get :users
     end
   end
 
-  resources :users
-  resources :access_groups
   resources :user_accesses
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

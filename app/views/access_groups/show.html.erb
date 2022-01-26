@@ -5,10 +5,12 @@
 <div class= "jumbotron jumbotron-fluid">
   Parent Group ID: <%=@access_group.parent_id%>
 </div>
-<%# <div class= "jumbotron jumbotron-fluid">
-  Locations: <%=@access_group.parent_id%>
-  <%# <ol class= "locations">
-    <%=render @locations%>
-  <%# </ol> %>
-  <%# <%= link_to "Add Locations", locations_path%>
-<%# </div> %>
+<div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Locations", locations_access_group_path %>
+</div>
+<div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Items", items_access_group_path %>
+</div>
+<div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Users", users_access_group_path %>
+</div>
