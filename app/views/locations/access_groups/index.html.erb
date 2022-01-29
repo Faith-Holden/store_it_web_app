@@ -2,5 +2,5 @@
 <h1>Groups With Location: <%= "#{@location.name}"%></h1>
 <%= link_to "Add to Group", "#"%>
 <ul>
-  <%= render @access_groups%>
-<ul>
+  <%= render :partial => "/access_groups/access_groups/access_group", :collection => @access_groups %>
+</ul>

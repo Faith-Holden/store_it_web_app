@@ -1,0 +1,8 @@
+<% provide(:title, "Access Group")%>
+<h1>Locations in Access Group: <%= "#{@access_group.name}"%></h1>
+<%= link_to "Add a Location", new_access_group_location_path%>
+<ul>
+  <% unless @locations.nil?%>
+    <%= render :partial => "/locations/locations/location", :collection => @locations %>
+  <% end%>
+<ul>

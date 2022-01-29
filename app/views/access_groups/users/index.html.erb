@@ -3,6 +3,6 @@
 <%= link_to "Add a User", "#"%>
 <ul>
   <% unless @users.nil?%>
-    <%= render @users%>
+    <%= render :partial => "/users/users/user", :collection => @users %>
   <% end%>
 <ul>

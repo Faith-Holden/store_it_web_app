@@ -12,25 +12,30 @@ Rails.application.routes.draw do
 
   resources :account_activations, only: [:edit]
 
-  resources :items do
-    member do
-      get :locations
-      get :access_groups #controller method not yet defined
+  scope module: :items do 
+    resources :items do
+      resources :locations, only: [:index, :new, :create]
     end
   end
-  resources :locations do
-    member do
-      get :items
-      get :child_locations
-      get :access_groups
+
+  scope module: :locations do 
+    resources :locations do
+        resources :items, only: [:index, :new, :create]
+        resources :sublocations, only: [:index, :new, :create]
+        resources :access_groups, only: [:index, :new, :create]
     end
   end
-  resources :users
-  resources :access_groups do
-    member do
-      get :items
-      get :locations
-      get :users
+  
+  scope module: :users do
+    resources :users
+  end
+
+  scope module: :access_groups do 
+    resources :access_groups do
+        resources :items, only: [:index, :new, :create]
+        resources :subgroups, only: [:index, :new, :create]
+        resources :locations, only: [:index, :new, :create]
+        resources :users, only: [:index, :new, :create]
     end
   end
 

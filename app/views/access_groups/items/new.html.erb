@@ -1,0 +1,14 @@
+<%= provide(:title, "Access Group")%>
+<h1>Add an item to this group.</h1>
+
+<%= form_with(url: "/access_groups/#{@access_group.id}/items", local: true) do |f|%>
+  <%= f.label :item_id%>
+  <%# update to other User#method that finds items that are not in the group already %>
+  <%= f.collection_select :item_id, @current_user.items,:id,:name %>
+
+  <%= f.label :location_id%>
+  <%# update to other User#method that finds items that are not in the group already %>
+  <%= f.collection_select :location_id, @access_group.locations,:id,:name, include_blank: true %>
+
+  <%= f.submit "Submit", class: "btn btn-primary"%>
+<% end%>

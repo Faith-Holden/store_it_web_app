@@ -2,5 +2,5 @@
 <h1>Items in Location: <%= "#{@location.name}"%></h1>
 <%= link_to "Add an Item", "#"%>
 <ul>
-  <%= render @items%>
+   <%= render :partial => "/items/items/item", :collection => @items %>
 <ul>

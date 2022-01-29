@@ -17,8 +17,15 @@ class AccessGroup < ApplicationRecord
     end
     items = items.uniq
   end
-  
-  
+
+  def add_location(location)
+    self.locations<<location
+  end
+
+  # def add_item(item)
+
+  # end
+
   class <<self
     # returns an array of group ids
     def with_user_visible_locations(user)
