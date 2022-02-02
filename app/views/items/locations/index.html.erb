@@ -1,9 +1,6 @@
-<% provide(:title, "Locations")%>
-<h1>Location with Item: <%= "#{@item.name}"%></h1>
-<%= link_to "Add a Location", "#"%>
+<% provide(:title, "Items")%>
+<h1>Locations with Item: <%= "#{@item.name}"%></h1>
+<%= link_to "Add to Location", new_item_location_path%>
 <ul>
-  <% @locations.each do |location|%>
-      <%= render :partial => "/locations/locations/location", :collection => @locations %>
-  <% end %>
-
+  <%= render :partial => "/locations/locations/location", :collection => @locations %>
 </ul>

@@ -1,6 +1,6 @@
 <% provide(:title, "Users")%>
 <h1>Users in Access Group: <%= "#{@access_group.name}"%></h1>
-<%= link_to "Add a User", "#"%>
+<%= link_to "Add a User", new_access_group_user_path%>
 <ul>
   <% unless @users.nil?%>
     <%= render :partial => "/users/users/user", :collection => @users %>

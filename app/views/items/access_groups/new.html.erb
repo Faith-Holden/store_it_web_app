@@ -1,0 +1,9 @@
+<%= provide(:title, "Item")%>
+<h1>Add to Access Group</h1>
+
+<%= form_with(url: "/items/#{@item.id}/access_groups", local: true) do |f|%>
+  <%= f.label :access_group_id%>
+  <%= f.collection_select :access_group_id, @current_user.groups_user_can_crud_item_access,:id,:name %>
+
+  <%= f.submit "Submit", class: "btn btn-primary"%>
+<% end%>

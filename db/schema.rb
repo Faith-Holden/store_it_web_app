@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_20_200510) do
+ActiveRecord::Schema.define(version: 2022_01_31_183524) do
 
   create_table "access_groups", force: :cascade do |t|
     t.string "name"
@@ -35,6 +35,16 @@ ActiveRecord::Schema.define(version: 2022_01_20_200510) do
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "items_accesses", force: :cascade do |t|
+    t.integer "access_group_id", null: false
+    t.integer "item_id", null: false
+    t.boolean "has_location"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["access_group_id"], name: "index_items_accesses_on_access_group_id"
+    t.index ["item_id"], name: "index_items_accesses_on_item_id"
   end
 
   create_table "location_accesses", force: :cascade do |t|
@@ -96,6 +106,8 @@ ActiveRecord::Schema.define(version: 2022_01_20_200510) do
 
   add_foreign_key "item_locations", "items"
   add_foreign_key "item_locations", "locations"
+  add_foreign_key "items_accesses", "access_groups"
+  add_foreign_key "items_accesses", "items"
   add_foreign_key "user_accesses", "access_groups"
   add_foreign_key "user_accesses", "users"
 end

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   scope module: :items do 
     resources :items do
       resources :locations, only: [:index, :new, :create]
+      resources :access_groups, only: [:index, :new, :create]
     end
   end
 

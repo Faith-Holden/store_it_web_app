@@ -1,6 +1,9 @@
 class Item < ApplicationRecord
   validates :name, presence: true, length: {maximum: 50}
 
+  has_many :items_accesses
+  has_many :access_groups, through: :items_accesses
+
   has_many :item_locations
   has_many :locations, through: :item_locations
    
@@ -14,6 +17,14 @@ class Item < ApplicationRecord
       end
     end
     locations = locations.uniq
+  end
+
+  def add_to_location(location)
+    self.locations << location
+  end
+
+  def add_to_group(access_group)
+    self.access_groups << access_group
   end
 
   # def quantity

@@ -7,4 +7,17 @@ class Items::LocationsController < ApplicationController
       @locations = @item.visible_locations(@current_user)
     end
   end
+
+  
+  def new
+    @item = Item.find(params[:item_id])
+  end
+
+  def create
+    @item = Item.find(params[:item_id])
+    @location = Location.find(params[:location_id])
+    @item.add_to_location(@location)
+    redirect_to item_locations_path(@item)
+  end
+
 end

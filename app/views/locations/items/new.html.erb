@@ -1,7 +1,7 @@
-<%= provide(:title, "Access Group")%>
-<h1>Add an item to this group.</h1>
+<%= provide(:title, "Location")%>
+<h1>Add an item to this Location.</h1>
 
-<%= form_with(url: "/access_groups/#{@access_group.id}/items", local: true) do |f|%>
+<%= form_with(url: "/locations/#{@location.id}/items", local: true) do |f|%>
   <%= f.label :item_id%>
   <%# update to other User#method that finds items that are not in the group already %>
   <%= f.collection_select :item_id, @current_user.items,:id,:name %>

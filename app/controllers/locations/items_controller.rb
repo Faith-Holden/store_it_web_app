@@ -8,4 +8,15 @@ class Locations::ItemsController < ApplicationController
       redirect_to location_url(@location)
     end
   end
+
+  def new
+    @location = Location.find(params[:location_id])
+  end
+
+  def create
+    @location = Location.find(params[:location_id])
+    @item = Item.find(params[:item_id])
+    @location.add_item(@item)
+    redirect_to location_items_path(@location)
+  end
 end

@@ -4,6 +4,7 @@
   <nav class = "navbar navbar-fixed-top" >
     <ul class= "nav navbar-nav navbar-right">
       <% if logged_in?%>
+        <li><%= link_to "Users", users_path%></li>
         <li><%= link_to "My Groups", access_groups_path%></li>
         <li><%= link_to "My Items", items_path%></li>
         <li><%= link_to "My Locations", locations_path%></li>

@@ -44,7 +44,7 @@ module Items
     private
     def item_params
       params.require(:item)
-            .permit(:name, :access_group_id, :location_id)
+            .permit(:name, :location_id)
     end
   end
 end

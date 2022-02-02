@@ -1,0 +1,11 @@
+<%= provide(:title, "Location")%>
+<h1>Add Sublocation</h1>
+
+<%= form_with(url: "/locations/#{@location.id}/sublocations", local: true) do |f|%>
+  <%= f.label :name %>
+  <%= f.text_field :name, class: 'form_control'%>
+
+  <%= hidden_field_tag 'parent_id', @location.id %>
+
+  <%= f.submit "Submit", class: "btn btn-primary"%>
+<% end%>

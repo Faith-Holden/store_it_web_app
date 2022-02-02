@@ -4,6 +4,9 @@ module Users
     skip_before_action :require_login, only: [:create, :new]
 
     def create
+      if logged_in?
+        redirect_to root_url unless @current_user.is_sys_admin?
+      end
       @user = User.new(user_params)
       
       if @user.save
@@ -21,6 +24,12 @@ module Users
     end
 
     def new
+      if logged_in?
+        unless @current_user.is_sys_admin?
+          redirect_to root_url
+          flash[:warning]= "You do not have permissions for adding other users."
+        end
+      end
       @user = User.new
     end
 
