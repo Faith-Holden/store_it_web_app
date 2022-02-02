@@ -1,0 +1,20 @@
+<% provide(:title, @location.name)%>
+<div class= "jumbotron jumbotron-fluid">
+  <%= @location.name %>
+</div>
+
+<div class= "jumbotron jumbotron-fluid">
+  <%= link_to "Parent Location", @location.parent%>
+</div>
+
+<div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Sub-Locations", location_sublocations_path(@location) %>
+</div>
+
+<div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Items", location_items_path(@location) %>
+</div>
+
+<div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Access Groups", location_access_groups_path(@location) %>
+</div>

@@ -1,0 +1,10 @@
+<%= provide(:title, "Access Group")%>
+<h1>Add a User to this group.</h1>
+
+<%= form_with(url: "/access_groups/#{@access_group.id}/users", local: true) do |f|%>
+  <%= f.label :user_id%>
+  <%# add functionality to filter users rather than using User.all %>
+  <%= f.collection_select :user_id, User.all,:id,:name, include_blank: true %>
+
+  <%= f.submit "Submit", class: "btn btn-primary"%>
+<% end%>

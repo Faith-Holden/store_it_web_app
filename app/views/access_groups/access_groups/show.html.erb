@@ -1,0 +1,18 @@
+<% provide(:title, "Access Group")%>
+<div class= "jumbotron jumbotron-fluid">
+  Access group number: <%=@access_group.id%>
+</div>
+<div class= "jumbotron jumbotron-fluid">
+  Parent Group ID: <%=@access_group.parent_id%>
+</div>
+<div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Locations", access_group_locations_path(@access_group) %>
+</div>
+ 
+<div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Items", access_group_items_path(@access_group) %>
+</div>
+
+<div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Users", access_group_users_path(@access_group) %>
+</div>

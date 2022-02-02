@@ -1,0 +1,6 @@
+<% provide(:title, "Sublocations")%>
+<h1>Sublocations: <%= "#{@location.name}"%></h1>
+<%= link_to "Add a Sublocation", new_location_sublocation_path(@location) %>
+<ul>
+  <%= render :partial => "/locations/locations/location", :collection => @sublocations %>
+</ul>

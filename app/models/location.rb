@@ -2,7 +2,7 @@ class Location < ApplicationRecord
   validates :name, presence: true, length: {maximum: 50}
 
   has_many :child_locations, class_name: "Location", foreign_key: "parent_id"
-  belongs_to :parent, class_name: "Location"
+  belongs_to :parent, class_name: "Location", optional: true
 
   has_many :item_locations
   has_many :items, through: :item_locations
@@ -10,9 +10,14 @@ class Location < ApplicationRecord
   has_many :location_accesses
   has_many :access_groups, through: :location_accesses
 
-  # def is_visible?(locations)
-  #   locations.include?(self)
-  # end
+  
+  def add_sublocation(sublocation)
+    self.locations<<sublocation
+  end
+
+  def add_item(item)
+    self.items << item
+  end
 
 
   def visible_groups(user)

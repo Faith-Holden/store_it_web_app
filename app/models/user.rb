@@ -20,6 +20,7 @@ class User < ApplicationRecord
   # -------------------------Getters ----------------------------
   # returns an array of items that a user can see
   def items
+    # might want to rework this to make it a little cleaner.
     all_items = Array.new
     self.locations_with_visible_items.each do |location|
       location.items.each do |item|
@@ -54,6 +55,11 @@ class User < ApplicationRecord
     AccessGroup.where(id: user_accesses)
   end
 
+  def groups_user_can_crud_item_access
+    user_accesses = UserAccess.has_user(self).can_crud_item_access
+    AccessGroup.where(id: user_accesses)
+  end
+
   
   # -------------------------------------------------------------
 
@@ -62,6 +68,11 @@ class User < ApplicationRecord
   def can_crud_root_location?
     UserPermission.find_by(user_id: self.id).can_crud_locations_no_parent
   end
+
+  def can_crud_non_root_location?
+    UserPermission.find_by(user_id: self.id).can_crud_locations_with_parent
+  end
+
 
   def can_crud_root_group?
     UserPermission.find_by(user_id: self.id).can_crud_access_group_no_parent
@@ -101,7 +112,12 @@ class User < ApplicationRecord
   # --------------------------------------------------------------
 
 
-  
+  def set_user_access_permissions(access_group, permissions=UserAccess::DEFAULT_PERMS)
+    user_access = UserAccess.where(user_id: self.id)
+                .find_by(access_group_id: access_group.id)
+    return nil if user_access.nil?
+    user_access.set_permissions(permissions)
+  end
 
   def activate
     update_attribute(:activated, true)

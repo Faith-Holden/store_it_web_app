@@ -1,8 +1,0 @@
-<% provide(:title, "Locations")%>
-<h1>Locations in Access Group: <%= "#{@access_group.name}"%></h1>
-<%= link_to "Add a Location", "#"%>
-<ul>
-  <% unless @locations.nil?%>
-    <%= render @locations%>
-  <% end%>
-<ul>

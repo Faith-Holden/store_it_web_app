@@ -1,13 +1,12 @@
-class UserAccessesController < ApplicationController
+  class UserAccessesController < ApplicationController
 
-  def create
-    
+    def create
+      
+    end
+
+    def destroy
+
+    end
+
   end
 
-  def destroy
-
-  end
-
-
-
-end

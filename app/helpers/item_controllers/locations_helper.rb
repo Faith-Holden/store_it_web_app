@@ -1,0 +1,2 @@
+module ItemControllers::LocationsHelper
+end

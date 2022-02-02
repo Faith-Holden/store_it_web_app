@@ -1,8 +1,0 @@
-<% provide(:title, "Users")%>
-<h1>Users in Access Group: <%= "#{@access_group.name}"%></h1>
-<%= link_to "Add a User", "#"%>
-<ul>
-  <% unless @users.nil?%>
-    <%= render @users%>
-  <% end%>
-<ul>

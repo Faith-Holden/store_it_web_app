@@ -1,0 +1,6 @@
+<% provide(:title, "Items")%>
+<h1>Access Groups with Item: <%= "#{@item.name}"%></h1>
+<%= link_to "Add to Access Group", new_item_access_group_path%>
+<ul>
+  <%= render :partial => "/access_groups/access_groups/access_group", :collection => @access_groups %>
+</ul>
