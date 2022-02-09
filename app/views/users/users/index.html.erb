@@ -1,5 +1,8 @@
 <%provide(:title, "Users")%>
 <h1>Users</h1>
+<%= link_to "New User", new_user_path%>
 <ul class="users">
-  <%= render @users%>
+  <% @users.each do |user|%>
+    <%= render :partial => "/users/users/indexed_user",:locals => {:user => user} %>
+  <% end%>
 </ul>

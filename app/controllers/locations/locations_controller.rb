@@ -35,16 +35,17 @@ module Locations
     end
 
     def index
-      if current_user.is_sys_admin?
-        @locations = Location.all
-      else
-        @locations = @current_user.locations
-      end
+      @locations = @current_user.visible_ancestor_locations
     end
 
+    def destroy
+      @location = Location.find(params[:id])
+      @location.destroy_location
+    end
 
     private
       def location_params
+        params[:parent_id] ||= nil
         params.require(:location).permit(:name, :parent_id)
       end
   end

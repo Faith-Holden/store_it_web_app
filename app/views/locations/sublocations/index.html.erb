@@ -2,5 +2,12 @@
 <h1>Sublocations: <%= "#{@location.name}"%></h1>
 <%= link_to "Add a Sublocation", new_location_sublocation_path(@location) %>
 <ul>
-  <%= render :partial => "/locations/locations/location", :collection => @sublocations %>
+  <% @sublocations.each do |sublocation|%>
+    <%= render layout: '/locations/locations/location', :locals => {:location => sublocation} do %>
+      <% if @current_user.can_crud_non_root_location?%>
+        |    <%= link_to "Remove Sublocation", location_sublocation_path(@location, sublocation), method: :delete,
+                                        data: { confirm: "Are you sure?" } %>
+      <% end %>
+    <% end %>
+  <% end %>
 </ul>

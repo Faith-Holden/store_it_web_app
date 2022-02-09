@@ -2,7 +2,12 @@
 <h1>Users in Access Group: <%= "#{@access_group.name}"%></h1>
 <%= link_to "Add a User", new_access_group_user_path%>
 <ul>
-  <% unless @users.nil?%>
-    <%= render :partial => "/users/users/user", :collection => @users %>
-  <% end%>
-<ul>
+  <% @users.each do |user|%>
+    <%= render layout: '/users/users/user', :locals => {:user => user} do %>
+      <% if @current_user.can_see_locations_in_group?(@access_group) && !current_user?(user)%>
+        |    <%= link_to "Remove From Group", access_group_user_path(@access_group, user), method: :delete,
+                                        data: { confirm: "Are you sure?" } %>
+      <% end %>
+    <% end %>
+  <% end %>
+</ul>

@@ -1,8 +1,12 @@
-<% provide(:title, "Access Group")%>
+<% provide(:title, "Items")%>
 <h1>Locations in Access Group: <%= "#{@access_group.name}"%></h1>
-<%= link_to "Add a Location", new_access_group_location_path%>
+<div>
+  <%= link_to "Add a Location", new_access_group_location_path%>
+</div>
 <ul>
-  <% unless @locations.nil?%>
-    <%= render :partial => "/locations/locations/location", :collection => @locations %>
-  <% end%>
-<ul>
+  <%@locations.each do |location|%>
+    <%= render layout: '/locations/locations/location', :locals => {:location => location} do %>
+      |  <%= link_to "remove location from group", access_group_location_path(@access_group, location)%>
+    <% end %>
+  <% end %>
+</ul>

@@ -19,4 +19,14 @@ class Locations::ItemsController < ApplicationController
     @location.add_item(@item)
     redirect_to location_items_path(@location)
   end
+
+  def destroy
+    item = Item.find(params[:id])
+    if item.destroy
+      flash[:success]= "Item removed from location."
+    else
+      flash[:danger]= "Failed to remove item."
+    redirect_to location_items_path(Location.find_by(id: params[:location_id]))
+    end
+  end
 end

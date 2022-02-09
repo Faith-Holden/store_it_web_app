@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2022_01_31_183524) do
   end
 
   create_table "item_locations", force: :cascade do |t|
-    t.integer "location_id", null: false
+    t.integer "location_id"
     t.integer "item_id", null: false
     t.integer "quantity"
     t.datetime "created_at", precision: 6, null: false
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 2022_01_31_183524) do
   create_table "items_accesses", force: :cascade do |t|
     t.integer "access_group_id", null: false
     t.integer "item_id", null: false
-    t.boolean "has_location"
+    t.integer "num_of_locations", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["access_group_id"], name: "index_items_accesses_on_access_group_id"
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 2022_01_31_183524) do
   end
 
   create_table "location_accesses", force: :cascade do |t|
-    t.integer "location_id"
+    t.integer "location_id", null: false
     t.integer "access_group_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

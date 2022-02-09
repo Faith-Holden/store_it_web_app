@@ -19,4 +19,17 @@ class AccessGroups::UsersController < ApplicationController
     @access_group.add_user(@user)
     redirect_to access_group_users_path(@access_group)
   end
+
+  def destroy
+    unless @current_user.can_crud_user_access?(AccessGroup.find(params[:access_group_id]))
+      flash[:danger]= "You do not have permission to remove users from this group!"
+      redirect_to root_url
+      return
+    end
+    UserAccess.where(user_id: params[:id])
+              .find_by(access_group_id: params[:access_group_id])
+              .destroy
+    redirect_to access_group_users_path
+  end
+  
 end

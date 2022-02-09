@@ -2,6 +2,8 @@
 <h1>Access Groups</h1>
 <%= link_to "New Group", new_access_group_path%>
 <ul class = "Access Groups">
-  <%= render @access_groups%>
+  <% @access_groups.each do |access_group|%>
+    <%= render :partial => "/access_groups/access_groups/indexed_access_group",:locals => {:access_group => access_group} %>
+  <% end%>
 </ul>
 

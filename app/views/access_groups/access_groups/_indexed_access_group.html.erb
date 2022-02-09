@@ -1,0 +1,6 @@
+  <%= render layout: '/access_groups/access_groups/access_group', :locals => {:access_group => access_group} do %>
+    <% if @current_user.can_crud_group?(access_group) %>
+      |    <%= link_to "delete", access_group, method: :delete,
+                                       data: { confirm: "Are you sure?" } %>
+    <% end %>
+  <% end %>

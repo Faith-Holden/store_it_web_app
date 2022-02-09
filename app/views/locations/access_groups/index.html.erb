@@ -1,6 +1,13 @@
 <% provide(:title, "Access Groups")%>
 <h1>Groups With Location: <%= "#{@location.name}"%></h1>
-<%= link_to "Add to Group", "#"%>
+<%= link_to "Add to Group", new_location_access_group_path%>
 <ul>
-  <%= render :partial => "/access_groups/access_groups/access_group", :collection => @access_groups %>
+  <% @access_groups.each do |access_group|%>
+    <%= render layout: '/access_groups/access_groups/access_group', :locals => {:access_group => access_group} do %>
+      <% if @current_user.can_crud_location_access?(access_group)%>
+        |    <%= link_to "Remove From Group", location_access_group_path(@location, access_group), method: :delete,
+                                        data: { confirm: "Are you sure?" } %>
+      <% end %>
+    <% end %>
+  <% end %>
 </ul>

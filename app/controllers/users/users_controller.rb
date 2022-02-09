@@ -42,13 +42,21 @@ module Users
     end
 
     def index
+      redirect_to root_url unless @current_user.is_sys_admin?
       @users = User.all
     end
 
     def destroy
-      # 
+      unless @current_user.is_sys_admin?
+        flash[:danger]= "You are not allowed to delete users!"
+        redirect_to root_url
+        return
+      end
+      User.find(params[:id]).destroy
+      flash[:success] = "User deleted"
+      redirect_to users_url
     end
-
+    
     private
       def user_params
         params.require(:user).permit(:name, :email, :password)

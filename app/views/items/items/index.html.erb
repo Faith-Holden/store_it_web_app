@@ -2,5 +2,7 @@
 <h1>Items</h1>
 <%= link_to "New Item", new_item_path%>
 <ul class="items">
-  <%= render @items%>
+  <% @items.each do |item|%>
+    <%= render :partial => "/items/items/indexed_item",:locals => {:item => item} %>
+  <% end%>
 </ul>

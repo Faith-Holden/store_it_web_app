@@ -2,5 +2,12 @@
 <h1>Items in Location: <%= "#{@location.name}"%></h1>
 <%= link_to "Add an Item", new_location_item_path%>
 <ul>
-   <%= render :partial => "/items/items/item", :collection => @items %>
+   <%@items.each do |item|%>
+    <%= render layout: '/items/items/item', :locals => {:item => item} do %>
+      <% if @current_user%> <%#need a better permission for this.%>
+        |    <%= link_to "Remove Item", location_item_path(@location, item), method: :delete,
+                                        data: { confirm: "Are you sure?" } %>
+      <% end %>
+    <% end %>
+  <% end %>
 <ul>

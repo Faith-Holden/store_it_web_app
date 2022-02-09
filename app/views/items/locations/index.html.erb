@@ -2,5 +2,11 @@
 <h1>Locations with Item: <%= "#{@item.name}"%></h1>
 <%= link_to "Add to Location", new_item_location_path%>
 <ul>
-  <%= render :partial => "/locations/locations/location", :collection => @locations %>
+  <% @locations.each do |location|%>
+    <%= render layout: '/locations/locations/location', :locals => {:location => location} do %>
+      <%# Add a permission filter based on whether the user is in a group that the locations belongs to, and has edit perms %>
+  |    <%= link_to "Remove From Group", item_location_path(@item, location), method: :delete,
+                                  data: { confirm: "Are you sure?" } %>
+    <% end %>
+  <% end %>
 </ul>

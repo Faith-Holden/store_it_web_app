@@ -20,4 +20,11 @@ class Items::LocationsController < ApplicationController
     redirect_to item_locations_path(@item)
   end
 
+  def destroy
+    ItemLocation.where(location_id: params[:id])
+              .find_by(item_id: params[:item_id])
+              .destroy
+    redirect_to item_locations_path(Item.find_by(id: params[:item_id]))
+  end
+
 end

@@ -1,6 +1,8 @@
 <% provide(:title, "Locations")%>
 <h1>Locations Index</h1>
-<%= link_to "New Location", new_location_path(@location)%>
+<%= link_to "New Location", new_location_path%>
 <ul>
-  <%= render @locations%>
+   <% @locations.each do |location|%>
+    <%= render :partial => "/locations/locations/indexed_location",:locals => {:location => location} %>
+  <% end%>
 </ul>

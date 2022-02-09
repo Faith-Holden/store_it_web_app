@@ -14,16 +14,16 @@ Rails.application.routes.draw do
 
   scope module: :items do 
     resources :items do
-      resources :locations, only: [:index, :new, :create]
-      resources :access_groups, only: [:index, :new, :create]
+      resources :locations
+      resources :access_groups
     end
   end
 
   scope module: :locations do 
     resources :locations do
-        resources :items, only: [:index, :new, :create]
-        resources :sublocations, only: [:index, :new, :create]
-        resources :access_groups, only: [:index, :new, :create]
+        resources :items
+        resources :sublocations
+        resources :access_groups
     end
   end
   
@@ -33,10 +33,10 @@ Rails.application.routes.draw do
 
   scope module: :access_groups do 
     resources :access_groups do
-        resources :items, only: [:index, :new, :create]
-        resources :subgroups, only: [:index, :new, :create]
-        resources :locations, only: [:index, :new, :create]
-        resources :users, only: [:index, :new, :create]
+        resources :items
+        resources :subgroups
+        resources :locations
+        resources :users
     end
   end
 

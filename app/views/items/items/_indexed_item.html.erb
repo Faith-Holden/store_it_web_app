@@ -1,0 +1,6 @@
+<%= render layout: '/items/items/item', :locals => {:item => item} do %>
+  <% if @current_user.can_crud_items? %>
+    |    <%= link_to "delete", item, method: :delete,
+                                      data: { confirm: "Are you sure?" } %>
+  <% end %>
+<% end %>

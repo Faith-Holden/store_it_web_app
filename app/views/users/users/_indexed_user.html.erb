@@ -1,0 +1,6 @@
+  <%= render layout: '/users/users/user', :locals => {:user => user} do %>
+    <% if @current_user.is_sys_admin? && !current_user?(user) %>
+      |  <%= link_to "delete", user, method: :delete,
+                                     data: { confirm: "Are you sure?" } %>
+    <% end %>
+  <% end %>

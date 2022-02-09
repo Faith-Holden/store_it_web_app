@@ -1,0 +1,6 @@
+<%= render layout: '/locations/locations/location', :locals => {:location => location} do %>
+  <% if @current_user.can_crud_non_root_location? %>
+    |    <%= link_to "delete", location, method: :delete,
+                                      data: { confirm: "Are you sure?" } %>
+  <% end %>
+<% end %>
