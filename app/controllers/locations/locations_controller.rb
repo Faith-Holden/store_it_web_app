@@ -41,6 +41,7 @@ module Locations
     def destroy
       @location = Location.find(params[:id])
       @location.destroy_location
+      redirect_to locations_path
     end
 
     private

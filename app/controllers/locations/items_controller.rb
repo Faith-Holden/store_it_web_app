@@ -21,12 +21,20 @@ class Locations::ItemsController < ApplicationController
   end
 
   def destroy
+    location = Location.find_by(id: params[:location_id])
     item = Item.find(params[:id])
-    if item.destroy
+    item_location = ItemLocation.where(location_id: location.id).find_by(item_id: item.id)
+
+    if ItemLocation.where(item_id: item.id).locationless.empty?
+      if item_location.update_attribute(:location_id, nil)
+        flash[:success]= "Item removed from location."
+      end
+    elsif item_location.destroy
       flash[:success]= "Item removed from location."
     else
       flash[:danger]= "Failed to remove item."
-    redirect_to location_items_path(Location.find_by(id: params[:location_id]))
     end
+
+    redirect_to location_items_path(Location.find_by(id: params[:location_id]))
   end
 end

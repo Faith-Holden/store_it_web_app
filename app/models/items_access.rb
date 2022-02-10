@@ -1,6 +1,6 @@
 class ItemsAccess < ApplicationRecord
-  belongs_to :access_group, dependent: :destroy
-  belongs_to :item, dependent: :destroy
+  belongs_to :access_group
+  belongs_to :item
 
   def increment_locations
     self.update_attribute(num_of_locations: self.num_of_locations+1)

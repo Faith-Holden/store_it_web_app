@@ -37,6 +37,15 @@ module AccessGroups
      def index
        @access_groups = @current_user.access_groups
      end
+
+     def edit
+     end
+     
+     def update
+     end
+
+
+
  
      private 
        def group_params

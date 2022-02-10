@@ -1,0 +1,13 @@
+<% provide(:title, "AccessGroup")%>
+<h1>Subgroups: <%= "#{@access_group.name}"%></h1>
+<%= link_to "Add a subgroup", new_access_group_subgroup_path(@access_group) %>
+<ul>
+  <% @subgroups.each do |subgroup|%>
+    <%= render layout: '/access_groups/access_groups/access_group', :locals => {:access_group => subgroup} do %>
+      <% if @current_user.can_crud_subgroup?(@access_group)%>
+        |    <%= link_to "Remove Subgroup", access_group_subgroup_path(@access_group, subgroup), method: :delete,
+                                        data: { confirm: "Are you sure?" } %>
+      <% end %>
+    <% end %>
+  <% end %>
+</ul>
