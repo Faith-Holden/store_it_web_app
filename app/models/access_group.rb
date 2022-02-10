@@ -1,6 +1,9 @@
 class AccessGroup < ApplicationRecord
   validates :name, presence: true, length: {maximum: 50}
 
+  has_many :subgroups, class_name: "AccessGroup", foreign_key: "parent_id"
+  belongs_to :parent, class_name: "AccessGroup", optional: true
+
   has_many :user_accesses, dependent: :destroy
   has_many :users, through: :user_accesses
 
@@ -9,6 +12,8 @@ class AccessGroup < ApplicationRecord
 
   has_many :location_accesses, dependent: :destroy
   has_many :locations, through: :location_accesses
+
+  after_create :create_user_accesses
 
   # def group_items
   #   locations = self.locations
@@ -85,8 +90,14 @@ class AccessGroup < ApplicationRecord
     end
   end
 
+  def admin_users
+    ids = UserAccess.is_group_admin
+                     .where(access_group_id: self.id).pluck(:id)
+    User.where(id: ids)
+  end
+
   def add_user(user)
-    self.users << user
+    self.users << user unless self.users.include?(user)
   end
 
   class <<self
@@ -122,7 +133,29 @@ class AccessGroup < ApplicationRecord
     def map_ids_to_groups(ids)
       ids.map{|id| AccessGroup.find_by(id: id)}
     end
-    
   end
+
+  private
+    def create_user_accesses
+      parent = self.parent
+      unless parent.nil?
+        parent.admin_users.each do |user|
+          UserAccess.new(user_id: user.id, access_group_id: self.id)
+                    .save
+          if user.is_sys_admin?
+            user.set_user_access_permissions(self, UserAccess::SYS_ADMIN_PERMS)
+          else
+            user.set_user_access_permissions(self, UserAccess::GROUP_ADMIN_PERMS)
+          end
+        end
+      end
+      # It appears that current_user dne. variable was set in sessioncontroller, I think
+      # @current_user
+      # unless self.users.include?(@current_user)
+      #   UserAccess.new(user_id: @current_user.id, access_group_id: self.id)
+      #             .save
+      #   @current_user.set_user_access_permissions(self, UserAccess::GROUP_ADMIN_PERMS)
+      # end
+    end
 
 end

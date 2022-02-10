@@ -120,6 +120,12 @@ class User < ApplicationRecord
     UserPermission.find_by(user_id: self.id).can_crud_access_group_no_parent
   end
 
+  def can_crud_group?(access_group)
+    user_access = UserAccess.group_with_user(access_group, self)
+    return false if user_access.nil?
+    return user_access.can_crud_group
+  end
+
   def can_crud_user_access?
     user_access = UserAccess.group_with_user(access_group, self)
     return false if user_access.nil?
