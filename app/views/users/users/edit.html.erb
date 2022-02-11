@@ -1,0 +1,17 @@
+<%= provide(:title, "User")%>
+<%= provide(:button_text, "Update Profile")%>
+<h1>Edit User</h1>
+
+<%= form_with(model: @user, local: true) do |f|%>
+  <%= render 'shared/error_messages', object: f.object%>
+  <%= f.label :name %>
+  <%= f.text_field :name, class: 'form_control',  value: @user.name%>
+
+  <%= f.label :email %>
+  <%= f.text_field :email, class: 'form-control',  value: @user.email%>
+
+  <%# <%= f.label :password %>
+  <%# <%= f.password_field :password, class: 'form-control',  value: @user.password%>
+
+  <%= f.submit yield(:button_text), class: "btn btn-primary"%>
+<% end%>

@@ -4,7 +4,23 @@
 </div>
 
 <div class= "jumbotron jumbotron-fluid">
-  <%= link_to "Parent Location", @location.parent%>
+  <div>
+    Parent location:
+  </div>
+  <% unless @location.parent.nil?%>
+    <%= link_to @location.parent.name, @location.parent%>
+  <% end %>
+</div>
+
+<div class= "jumbotron jumbotron-fluid">
+  <%= link_to "Edit Location", edit_location_path%>
+</div>
+
+<div class= "jumbotron jumbotron-fluid">
+  <div>
+    Description:
+  </div>
+  <%=@location.description %>
 </div>
 
 <div class= "jumbotron jumbotron-fluid">

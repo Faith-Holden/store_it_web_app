@@ -2,6 +2,7 @@ module Users
     class UsersController < ApplicationController
 
     skip_before_action :require_login, only: [:create, :new]
+    before_action :crud_authorization, only: [:edit, :update, :destroy]
 
     def create
       if logged_in?
@@ -46,20 +47,37 @@ module Users
       @users = User.all
     end
 
-    def destroy
-      unless @current_user.is_sys_admin?
-        flash[:danger]= "You are not allowed to delete users!"
-        redirect_to root_url
-        return
-      end
+    def destroy #permission managed by before_action
       User.find(params[:id]).destroy
       flash[:success] = "User deleted"
       redirect_to users_url
     end
+
+    def edit
+      @user = User.find_by(id: params[:id])
+    end
+
+    def update
+      @user = User.find_by(id: params[:id])
+      if @user.update(user_params)
+        flash[:success]= "User updated"
+        redirect_to @user
+      else
+        render 'edit'
+      end
+    end
+
     
     private
       def user_params
         params.require(:user).permit(:name, :email, :password)
+      end
+
+      def crud_authorization
+        unless @current_user.is_sys_admin? || correct_user?
+          redirect_to root_url
+          return
+        end
       end
   end
 end

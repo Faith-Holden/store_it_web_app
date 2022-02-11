@@ -1,5 +1,6 @@
 module AccessGroups
   class AccessGroupsController < ApplicationController
+    before_action :crud_authorization
      def new
        @access_group = AccessGroup.new
        @current_user = current_user
@@ -39,17 +40,29 @@ module AccessGroups
      end
 
      def edit
+      @access_group = AccessGroup.find_by(id: params[:id])
+      @access_groups = @current_user.groups_user_can_crud_subgroup
      end
-     
+
      def update
-     end
+      @access_group = AccessGroup.find_by(id: params[:id])
+      if @access_group.update(group_params)
+        flash[:success]= "Group updated"
+        redirect_to @access_group
+      else
+        render 'edit'
+      end
+
+    end
 
 
-
- 
      private 
        def group_params
-         params.require(:access_group).permit(:name, :parent_id)
+         params.require(:access_group).permit(:name, :parent_id, :description)
+       end
+
+       def crud_authorization
+        # put logic here
        end
  
    end

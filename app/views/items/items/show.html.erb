@@ -4,5 +4,16 @@
 </div>
 
 <div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Edit item", edit_item_path %>
+</div>
+
+<div class= "jumbotron jumbotron-fluid">
+  <div>
+  Description:
+  </div>
+  <%= @item.description %>
+</div>
+
+<div class= "jumbotron jumbotron-fluid">
   <%=link_to "Locations", item_locations_path(@item) %>
 </div>

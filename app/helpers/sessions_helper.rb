@@ -32,6 +32,7 @@ module SessionsHelper
   end
 
   def correct_user?
-    # 
+    @user = User.find_by(id: params[:id])
+    current_user?(@user)
   end
 end

@@ -17,8 +17,7 @@ module Locations
     def new
       if @current_user.is_sys_admin?
         @location = Location.new
-        @parent_locations = Location.all 
-        # debugger
+        @parent_locations = @current_user.locations
       else
         flash[:danger]= "Only the System Administrator can add locations at this time."
         redirect_to root_url
@@ -44,10 +43,25 @@ module Locations
       redirect_to locations_path
     end
 
+    def edit
+      @location = Location.find_by(id: params[:id])
+      @parent_locations = @current_user.locations
+    end
+
+    def update
+      @location = Location.find_by(id: params[:id])
+      if @location.update(location_params)
+        flash[:success]= "Location updated"
+        redirect_to @location
+      else
+        render 'edit'
+      end
+    end
+
     private
       def location_params
         params[:parent_id] ||= nil
-        params.require(:location).permit(:name, :parent_id)
+        params.require(:location).permit(:name, :parent_id, :description)
       end
   end
 end

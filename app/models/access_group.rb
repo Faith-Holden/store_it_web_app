@@ -149,7 +149,7 @@ class AccessGroup < ApplicationRecord
           end
         end
       end
-      # It appears that current_user dne. variable was set in sessioncontroller, I think
+      # It appears that current_user does not exist. variable was set in sessioncontroller, I think
       # @current_user
       # unless self.users.include?(@current_user)
       #   UserAccess.new(user_id: @current_user.id, access_group_id: self.id)

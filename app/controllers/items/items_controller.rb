@@ -52,10 +52,24 @@ module Items
       redirect_to items_url
     end
 
+    def edit
+      @item = Item.find_by(id: params[:id])
+    end
+
+    def update
+      @item = Item.find_by(id: params[:id])
+      if @item.update(item_params)
+        flash[:success]= "Item updated"
+        redirect_to @item
+      else
+        render 'edit'
+      end
+    end
+
   private
     def item_params
       params.require(:item)
-            .permit(:name, :location_id)
+            .permit(:name, :location_id, :description)
     end
 
     def require_user_can_crud_items

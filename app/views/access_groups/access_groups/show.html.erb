@@ -7,6 +7,20 @@
 </div>
 
 <div class= "jumbotron jumbotron-fluid">
+  <%=link_to "Edit Access Group", edit_access_group_path(@access_group) %>
+</div>
+
+<div class= "jumbotron jumbotron-fluid">
+  <div>
+    <%# <h4> %>
+      Description:
+    <%# </h4> %>
+  </div> 
+  <%= @access_group.description%>
+</div>
+
+
+<div class= "jumbotron jumbotron-fluid">
   <%=link_to "Subgroups", access_group_subgroups_path(@access_group) %>
 </div>
 

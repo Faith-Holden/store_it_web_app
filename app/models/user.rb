@@ -132,7 +132,7 @@ class User < ApplicationRecord
     return user_access.can_crud_subgroups
   end
 
-  def can_crud_user_access?
+  def can_crud_user_access?(access_group)
     user_access = UserAccess.group_with_user(access_group, self)
     return false if user_access.nil?
     return user_access.can_crud_user_access

@@ -1,5 +1,17 @@
-<%= provide(:title, "Create profile")%>
+<%= provide(:title, "User")%>
 <%= provide(:button_text, "Create Profile")%>
 <h1>New User</h1>
 
-<%= render 'users/users/user_form'%>
+<%= form_with(model: @user, local: true) do |f|%>
+  <%= render 'shared/error_messages', object: f.object%>
+  <%= f.label :name %>
+  <%= f.text_field :name, class: 'form_control'%>
+
+  <%= f.label :email %>
+  <%= f.text_field :email, class: 'form-control'%>
+
+  <%= f.label :password %>
+  <%= f.password_field :password, class: 'form-control'%>
+
+  <%= f.submit yield(:button_text), class: "btn btn-primary"%>
+<% end%>

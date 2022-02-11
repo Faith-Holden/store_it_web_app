@@ -5,6 +5,9 @@
   <%= f.label :name %>
   <%= f.text_field :name, class: 'form_control'%>
 
+  <%= f.label :description %>
+  <%= f.text_field :description, class: 'form_control'%>
+
   <%= f.label :parent_id%>
   <% if @current_user.can_crud_root_group?%>
     <%= f.collection_select :parent_id, @access_groups,:id,:name, include_blank: true %>

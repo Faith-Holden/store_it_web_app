@@ -1,0 +1,21 @@
+<%= provide(:title, "Location")%>
+<h1>Edit Location</h1>
+
+<%= form_with(model: @location, local: true) do |f|%>
+  <%= render 'shared/error_messages', object: f.object%>
+  <%= f.label :name %>
+  <%= f.text_field :name, class: 'form_control',  value: @location.name%>
+
+  <%= f.label :description %>
+  <%= f.text_field :description, class: 'form_control',  value: @location.description%>
+
+  <%= f.label :parent_id%>
+  <% if @current_user.can_crud_root_location?%>
+    <%= f.collection_select :parent_id, @parent_locations, :id, :name, include_blank: true,  value: @location.parent_id%>
+  <% else %>
+    <%= f.collection_select :parent_id, @parent_locations,:id,:name,  value: @location.parent_id %>
+  <% end %>
+
+
+  <%= f.submit "Submit", class: "btn btn-primary"%>
+<% end%>
