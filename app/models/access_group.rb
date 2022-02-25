@@ -15,17 +15,6 @@ class AccessGroup < ApplicationRecord
 
   after_create :create_user_accesses
 
-  # def group_items
-  #   locations = self.locations
-  #   items = self.items
-  #   locations.each do |location|
-  #     location.items.each do |item|
-  #       items << item
-  #     end
-  #   end
-  #   items = items.uniq.sort_by{ |item| item.id }
-  # end
-
   def add_location(location)
     unless self.locations.include?(location)
       self.locations<<location 
@@ -34,7 +23,6 @@ class AccessGroup < ApplicationRecord
       end
     end
   end
-
   
   def remove_location(location)
     location.items.each do |item|

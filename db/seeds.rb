@@ -5,7 +5,8 @@ User.create!(name: "Example User",
   password_confirmation: "foobar",
   activated: true)
 
-User.first.set_user_permissions(UserPermission::SYS_ADMIN_PERMS)
+UserPermission.find_by(id: 1)
+              .set_permissions(UserPermission::SYS_ADMIN_PERMS)
 
 10.times do |n|
   name = Faker::Name.name

@@ -1,9 +1,16 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  access_group_id: 1
+I1:
+  id: 1
+  name: Item1
+  description: "Description for I1."
 
-two:
-  name: MyOtherString
-  access_group_id: 1
+I2:
+  id: 2
+  name: Item2
+  description: "Description for I2."
+
+I3:
+  id: 3
+  name: Item3
+  description: "Description for I3."

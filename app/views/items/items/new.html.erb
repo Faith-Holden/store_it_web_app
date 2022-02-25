@@ -2,13 +2,21 @@
 <h1>New Item</h1>
 
 <%= form_with(model: @item, local: true) do |f|%>
-  <%= f.label :name %>
-  <%= f.text_field :name, class: 'form_control'%>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form_control'%>
+  </div>
+  <div>
+    <%= f.label :description %>
+    <%= f.text_field :description, class: 'form_control'%>
+  </div>
+  <span class="image">
+    <%= f.label :image%>
+    <%= f.file_field :image, accept: "image/jpeg,image/gif,image/png" %>
+  </span>
+  <div>
+    <%= f.submit "Submit", class: "btn btn-primary"%>
+  </div>
 
-  <%= f.label :description %>
-  <%= f.text_field :description, class: 'form_control'%>
-  
-
-  <%= f.submit "Submit", class: "btn btn-primary"%>
 <% end%>
 

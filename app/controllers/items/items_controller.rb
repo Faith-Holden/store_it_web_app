@@ -69,7 +69,7 @@ module Items
   private
     def item_params
       params.require(:item)
-            .permit(:name, :location_id, :description)
+            .permit(:name, :location_id, :description, :image)
     end
 
     def require_user_can_crud_items

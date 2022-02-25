@@ -1,11 +1,17 @@
 class Item < ApplicationRecord
   validates :name, presence: true, length: {maximum: 50}
+  validates :image, content_type: { in: %w[image/jpeg image/gif image/png],
+                                    message: "must be a valid image format" },
+                    size: { less_than: 5.megabytes,
+                            message: "should be less than 5MB" }
 
   has_many :items_accesses, dependent: :destroy
   has_many :access_groups, through: :items_accesses
 
   has_many :item_locations, dependent: :destroy
   has_many :locations, through: :item_locations
+
+  has_one_attached :image
    
   after_create :set_item_location
 
@@ -30,11 +36,6 @@ class Item < ApplicationRecord
   end
 
   # def quantity
-  #   quantity = 0
-  #   self.item_locations.each do |il|
-  #     quantity += il.quantity unless il.quantity.nil?
-  #   end
-  #   return quantity
   # end
 
   def set_item_location(location= nil)

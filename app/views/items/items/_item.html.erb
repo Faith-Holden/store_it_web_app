@@ -1,4 +1,5 @@
 <li>
+  <%= image_tag item.image if item.image.attached? %>
   <%= link_to item.name, item %>
   <%= yield%>
 </li>

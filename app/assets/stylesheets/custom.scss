@@ -1,2 +1,65 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.items {
+  // list-style: none;
+  // padding: 0;
+  li{
+    padding: 10px 0;
+    border-top: 1px solid #e8e8e8;
+    img{
+      display: block;
+      padding: 5px 0;
+      display: block;
+      max-width:100px;
+      max-height:100px;
+      width: auto;
+      height: auto;
+    }
+  }
+  // .user{
+  //   margin-top:  5em;
+  //   padding-top: 0;
+  // }
+  img{
+    display: block;
+    padding: 5px 0;
+    display: block;
+    max-width:250px;
+    max-height:250px;
+    width: auto;
+    height: auto;
+  }
+}
+
+
+.locations {
+  // list-style: none;
+  // padding: 0;
+  li{
+    padding: 10px 0;
+    border-top: 1px solid #e8e8e8;
+    img{
+      display: block;
+      padding: 5px 0;
+      display: block;
+      max-width:200px;
+      max-height:200px;
+      width: auto;
+      height: auto;
+    }
+  }
+  // .user{
+  //   margin-top:  5em;
+  //   padding-top: 0;
+  // }
+  img{
+    display: block;
+    padding: 5px 0;
+    display: block;
+    max-width:200px;
+    max-height:200px;
+    width: auto;
+    height: auto;
+  }
+}

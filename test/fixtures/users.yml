@@ -1,7 +1,23 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+U1:
+  id: 1
+  name: User1
+  email: user1@example.com
+  password_digest: <%= User.digest("password") %>
+  activated: true
 
-two:
-  name: MyString
+U2:
+  id: 2
+  name: User2
+  email: user2@example.com
+  password_digest: <%= User.digest("password") %>
+  activated: true
+
+
+U3:
+  id: 3
+  name: User3
+  email: user3@example.com
+  password_digest: <%= User.digest("password") %>
+  activated: false

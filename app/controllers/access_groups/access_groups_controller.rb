@@ -1,6 +1,6 @@
 module AccessGroups
   class AccessGroupsController < ApplicationController
-    before_action :crud_authorization
+    before_action :crud_authorization, except: :index
      def new
        @access_group = AccessGroup.new
        @current_user = current_user
@@ -12,7 +12,7 @@ module AccessGroups
        if @access_group.save
          redirect_to @access_group
        else
-         render 'new'
+        redirect_to new_access_group_path
        end
      end
  
@@ -32,11 +32,11 @@ module AccessGroups
        end
        access_group.destroy
        flash[:success] = "Group sucessfully deleted"
-       redirect_to access_groups_url
+       redirect_to access_groups_path
      end
  
      def index
-       @access_groups = @current_user.access_groups
+       @access_groups = current_user.access_groups
      end
 
      def edit
@@ -50,20 +50,23 @@ module AccessGroups
         flash[:success]= "Group updated"
         redirect_to @access_group
       else
-        render 'edit'
+        redirect_to access_groups_path(@access_group)
       end
 
     end
 
 
      private 
-       def group_params
-         params.require(:access_group).permit(:name, :parent_id, :description)
-       end
+      def group_params
+        params.require(:access_group).permit(:name, :parent_id, :description)
+      end
 
-       def crud_authorization
-        # put logic here
-       end
+      def crud_authorization
+        unless current_user.is_sys_admin?
+          flash[:danger]= "At this time, only sys admins are allowed to create, update, or destroy access groups."
+          redirect_to access_groups_path
+        end
+      end
  
    end
  end

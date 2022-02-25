@@ -1,11 +1,19 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+UA1:
+  id: 1
+  user_id: 1
+  is_sys_admin: 1
+  can_crud_items: 1
+  can_crud_access_group_no_parent: 1
+  can_crud_locations_with_parent: 1
+  can_crud_locations_no_parent: 1
+
+UA2:
+  id: 2
+  user_id: 2
+  is_sys_admin: 0
+  can_crud_items: 0
+  can_crud_access_group_no_parent: 0
+  can_crud_locations_with_parent: 0
+  can_crud_locations_no_parent: 0
