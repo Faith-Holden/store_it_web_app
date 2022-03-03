@@ -2,33 +2,31 @@ module Users
     class UsersController < ApplicationController
 
     skip_before_action :require_login, only: [:create, :new]
-    before_action :crud_authorization, only: [:edit, :update, :destroy]
+    before_action :crud_authorization, only: [:show, :edit, :update, :destroy]
 
     def create
       if logged_in?
+        flash[:danger]= "You do not have permission to add other users."
         redirect_to root_url unless @current_user.is_sys_admin?
+        return
       end
       @user = User.new(user_params)
       
       if @user.save
-        UserPermission.new( user_id: @user.id,
-          is_sys_admin: false,
-          can_crud_items: false,
-          can_crud_locations_with_parent: false,
-          can_crud_locations_no_parent: false).save
+        UserPermission.new( user_id: @user.id).save
         @user.send_activation_email
         flash[:info]= "Please check your email for an activation link."
-        redirect_to root_url
-      else
         render 'new'
+      else
+        redirect_to new_user_path
       end
     end
 
     def new
       if logged_in?
         unless @current_user.is_sys_admin?
+          flash[:danger]= "You do not have permission to add other users."
           redirect_to root_url
-          flash[:warning]= "You do not have permissions for adding other users."
         end
       end
       @user = User.new
@@ -47,10 +45,10 @@ module Users
       @users = User.all
     end
 
-    def destroy #permission managed by before_action
+    def destroy
       User.find(params[:id]).destroy
       flash[:success] = "User deleted"
-      redirect_to users_url
+      redirect_to users_path
     end
 
     def edit
@@ -58,12 +56,13 @@ module Users
     end
 
     def update
-      @user = User.find_by(id: params[:id])
-      if @user.update(user_params)
+      user = User.find_by(id: params[:id])
+      if user.update(user_params)
         flash[:success]= "User updated"
-        redirect_to @user
+        redirect_to user
+        return
       else
-        render 'edit'
+        redirect_to edit_user_path(user)
       end
     end
 
@@ -74,9 +73,9 @@ module Users
       end
 
       def crud_authorization
-        unless @current_user.is_sys_admin? || correct_user?
+        unless current_user.is_sys_admin? || correct_user?
+          flash[:danger]= "You do not have permission to create, update, or destroy other users."
           redirect_to root_url
-          return
         end
       end
   end

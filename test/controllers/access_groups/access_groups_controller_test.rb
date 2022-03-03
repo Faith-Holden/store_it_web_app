@@ -4,8 +4,8 @@ class AccessGroups::AccessGroupsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @admin_user = users(:U1)
     @admin_user.user_accesses << user_accesses(:UA1)
-    @other_user = users(:U2)
-    @access_group = AccessGroup.first
+    @other_user = users(:U4)
+    @access_group = access_groups(:AG1)
   end
 
 
@@ -42,16 +42,16 @@ class AccessGroups::AccessGroupsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to access_groups_path
   end
 
-  test "Should redirect edit if wrong user" do
+  test "should redirect edit if wrong user" do
     log_in_as(@other_user)
     get edit_access_group_path(@access_group)
     assert_not flash.empty?
     assert_redirected_to access_groups_path
   end
 
-  test "Should redirect update if wrong user" do
+  test "should redirect update if wrong user" do
     log_in_as(@other_user)
-    post access_groups_path(@access_group), params: {access_group: {name: "AG5"}}
+    patch access_group_path(@access_group), params: {access_group: {name: "AG5"}}
     assert_not flash.empty?
     assert_redirected_to access_groups_path
   end
@@ -93,7 +93,7 @@ class AccessGroups::AccessGroupsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should redirect update if not logged in" do
-    post access_groups_path(@access_group), params: {access_group: {name: "AG5"}}
+    patch access_group_path(@access_group), params: {access_group: {name: "AG5"}}
     assert_not flash.empty?
     assert_redirected_to login_path
   end

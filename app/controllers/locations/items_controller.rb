@@ -1,12 +1,11 @@
 class Locations::ItemsController < ApplicationController
+
+  before_action :require_user_can_crud, only: [:destroy, :new, :create]
+  before_action :require_user_can_see_items_in_location, only: :index
+
+
   def index
-    @location = Location.find(params[:location_id])
-    if @current_user.locations_with_visible_items.include?(@location)
-      @items = @location.items
-    else
-      flash[:warning]= "Items in this location are not available to view."
-      redirect_to location_url(@location)
-    end
+    @items = @location.items
   end
 
   def new
@@ -37,4 +36,25 @@ class Locations::ItemsController < ApplicationController
 
     redirect_to location_items_path(Location.find_by(id: params[:location_id]))
   end
+
+  private
+    def require_user_can_see_items_in_location
+      @location = Location.find(params[:location_id])
+      if current_user.is_sys_admin?
+        return
+      end
+
+      unless current_user.locations_with_visible_items.include?(@location)
+        flash[:warning]= "Items in this location are not available to view."
+        redirect_to location_url(@location)
+      end
+    end
+
+    def require_user_can_crud
+      # This will need to be updated to have a better requirement.
+      unless current_user.is_sys_admin?
+        flash[:danger]= "You do not have permission to add or remove items from this location!"
+        redirect_to location_items_path(Location.find_by(params[:location_id]))
+      end
+    end
 end

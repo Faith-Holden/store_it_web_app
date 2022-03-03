@@ -1,28 +1,18 @@
 module Items
   class ItemsController < ApplicationController
-    before_action :require_user_can_crud_items, only: :destroy
+    before_action :require_user_can_crud_items, except: :index
 
     def new
-      if current_user.is_sys_admin?
-        @item = Item.new
-        @current_user = current_user #verify that this can be removed
-        @parent_locations = Location.all 
-      else
-        flash[:danger]= "Only the System Administrator can add items at this time."
-        redirect_to root_url
-      end
+      @item = Item.new
+      @parent_locations = Location.all 
     end
 
     def create
-      if @current_user.is_sys_admin?
-        @item = Item.new(item_params)
-        if @item.save
-          redirect_to @item
-        else
-          render 'new'
-        end
+      @item = Item.new(item_params)
+      if @item.save
+        redirect_to @item
       else
-        redirect_to root_url
+        redirect_to new_item_path
       end
     end
 
@@ -62,7 +52,7 @@ module Items
         flash[:success]= "Item updated"
         redirect_to @item
       else
-        render 'edit'
+        redirect_to edit_item_path(@item)
       end
     end
 
@@ -73,9 +63,9 @@ module Items
     end
 
     def require_user_can_crud_items
-      unless @current_user.can_crud_items?
+      unless current_user.can_crud_items?
         flash[:danger]= "You do not have permission to delete items!"
-        redirect_to root_url
+        redirect_to items_path
       end
     end
   end

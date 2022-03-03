@@ -29,18 +29,18 @@ class AccessGroup < ApplicationRecord
       self.remove_item(item)
     end
     self.location_accesses
-        .find_by(location_id: location.id)
-        .destroy
+        &.find_by(location_id: location.id)
+        &.destroy
   end
 
   def remove_location_tree(location, user)
-    user.crudable_access_location_tree(location).each do |location|
+    location.visible_descendants(user).each do |location|
       self.remove_location(location)
     end
   end
 
   def add_location_tree(user, location)
-    user.crudable_access_location_tree(location).each do |location|
+    location.visible_descendants(user).each do |location|
       self.add_location(location)
     end
   end
@@ -69,18 +69,19 @@ class AccessGroup < ApplicationRecord
 
   def remove_item(item)
     item_access = self.items_accesses.find_by(item_id: item.id)
+    return if item_access.nil? 
     item_access.decrement_locations
 
     # num of locations includes item_locations that have a null location
     #  (items with no physical location -e.g. items in transit)
-    if item_access.num_of_locations == 0
+    if item_access.num_of_locations <= 0
       item_access.destroy
     end
   end
 
   def admin_users
     ids = UserAccess.is_group_admin
-                     .where(access_group_id: self.id).pluck(:id)
+                     .where(access_group_id: self.id).pluck(:user_id)
     User.where(id: ids)
   end
 
@@ -137,6 +138,8 @@ class AccessGroup < ApplicationRecord
           end
         end
       end
+
+
       # It appears that current_user does not exist. variable was set in sessioncontroller, I think
       # @current_user
       # unless self.users.include?(@current_user)

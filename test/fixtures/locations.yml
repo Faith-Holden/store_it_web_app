@@ -2,24 +2,36 @@
 
 L1:
   id: 1
-  name: Location1
+  name: L1
   description: "Description for L1."
   parent_id: nil
 
 L2:
   id: 2
-  name: Location2
+  name: L2
   description: "Description for L2."
   parent_id: 1
 
 L3:
   id: 3
-  name: Location3
+  name: L3
   description: "Description for L3."
   parent_id: 1
 
 L4:
   id: 4
-  name: Location4
+  name: L4
   description: "Description for L4."
   parent_id: 2
+
+L5:
+  id: 5
+  name: L5
+  description: "Description for L5."
+  parent_id: nil
+
+L6:
+  id: 6
+  name: L6
+  description: "Description for L6."
+  parent_id: nil

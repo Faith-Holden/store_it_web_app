@@ -31,10 +31,6 @@ class Item < ApplicationRecord
     return ItemLocation.where(item_id: self.id).with_location.empty?
   end
 
-  def add_to_location(location)
-    self.locations << location
-  end
-
   # def quantity
   # end
 

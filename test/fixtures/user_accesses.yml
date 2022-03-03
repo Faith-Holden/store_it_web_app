@@ -26,3 +26,108 @@ UA2:
   can_crud_subgroups: 1
   can_crud_item_access: 1
   can_crud_location_access: 1
+
+UA3:
+  user_id: 1
+  access_group_id: 3
+  group_admin: 1
+  can_see_group: 1
+  can_see_items: 1
+  can_see_locations: 1
+  can_crud_group: 1
+  can_crud_user_access: 1
+  can_crud_subgroups: 1
+  can_crud_item_access: 1
+  can_crud_location_access: 1
+
+UA4:
+  user_id: 1
+  access_group_id: 3
+  group_admin: 1
+  can_see_group: 1
+  can_see_items: 1
+  can_see_locations: 1
+  can_crud_group: 1
+  can_crud_user_access: 1
+  can_crud_subgroups: 1
+  can_crud_item_access: 1
+  can_crud_location_access: 1
+
+Group1User2:
+  user_id: 2
+  access_group_id: 1
+  group_admin: 1
+  can_see_group: 1
+  can_see_items: 1
+  can_see_locations: 1
+  can_crud_group: 1
+  can_crud_user_access: 1
+  can_crud_subgroups: 1
+  can_crud_item_access: 1
+  can_crud_location_access: 1
+
+
+Group1User3:
+  user_id: 3
+  access_group_id: 1
+  group_admin: 0
+  can_see_group: 1
+  can_see_items: 0
+  can_see_locations: 0
+  can_crud_group: 0
+  can_crud_user_access: 0
+  can_crud_subgroups: 0
+  can_crud_item_access: 0
+  can_crud_location_access: 0
+
+Group1User4:
+  user_id: 4
+  access_group_id: 1
+  group_admin: 0
+  can_see_group: 1
+  can_see_items: 0
+  can_see_locations: 0
+  can_crud_group: 0
+  can_crud_user_access: 0
+  can_crud_subgroups: 0
+  can_crud_item_access: 0
+  can_crud_location_access: 0
+
+Group2User2:
+  user_id: 2
+  access_group_id: 2
+  group_admin: 1
+  can_see_group: 1
+  can_see_items: 1
+  can_see_locations: 1
+  can_crud_group: 1
+  can_crud_user_access: 1
+  can_crud_subgroups: 1
+  can_crud_item_access: 1
+  can_crud_location_access: 1
+
+Group3User2:
+  user_id: 2
+  access_group_id: 3
+  group_admin: 1
+  can_see_group: 1
+  can_see_items: 1
+  can_see_locations: 1
+  can_crud_group: 1
+  can_crud_user_access: 1
+  can_crud_subgroups: 1
+  can_crud_item_access: 1
+  can_crud_location_access: 1
+
+Group4User2:
+  user_id: 2
+  access_group_id: 4
+  group_admin: 1
+  can_see_group: 1
+  can_see_items: 1
+  can_see_locations: 1
+  can_crud_group: 1
+  can_crud_user_access: 1
+  can_crud_subgroups: 1
+  can_crud_item_access: 1
+  can_crud_location_access: 1

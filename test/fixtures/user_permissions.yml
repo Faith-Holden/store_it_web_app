@@ -17,3 +17,21 @@ UA2:
   can_crud_access_group_no_parent: 0
   can_crud_locations_with_parent: 0
   can_crud_locations_no_parent: 0
+
+UA3:
+  id: 3
+  user_id: 3
+  is_sys_admin: 0
+  can_crud_items: 0
+  can_crud_access_group_no_parent: 0
+  can_crud_locations_with_parent: 0
+  can_crud_locations_no_parent: 0
+
+UA3:
+  id: 4
+  user_id: 4
+  is_sys_admin: 0
+  can_crud_items: 0
+  can_crud_access_group_no_parent: 0
+  can_crud_locations_with_parent: 0
+  can_crud_locations_no_parent: 0

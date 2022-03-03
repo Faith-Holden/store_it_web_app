@@ -1,60 +1,101 @@
 require 'test_helper'
 class Items::LocationsControllerTest < ActionDispatch::IntegrationTest
-  # ----tests for redirecting if wrong user ------------
-  test "Should redirect create if wrong user" do
-    flunk "test is not yet written"
+
+  def setup
+    @admin_user = users(:U1)
+    @other_user = users(:U2)
+    @item = items(:I1)
+    @first_location = locations(:L1)
+    @first_location.add_item( @item)
+    @second_location = locations(:L2)
   end
 
-  test "Should redirect new if wrong user" do
-    flunk "test is not yet written"
+  # ------------------wrong user ------------
+  test "should redirect create if wrong user" do
+    log_in_as(@other_user)
+    assert_no_difference "@item.locations.count" do
+      post item_locations_path(@item), params: {location_id: @second_location.id}
+    end
+    assert_not flash.empty?
+    assert_redirected_to item_path(@item)
   end
 
-  test "Should redirect destroy if wrong user" do
-    flunk "test is not yet written"
-  end
-
-  test "Should redirect index if wrong user" do
-    flunk "test is not yet written"
-  end
-  #--------------------------------------------------
-
-  # --tests for redirecting if not logged in ----------
-  test "Should redirect create if not signed in" do
-    flunk "test is not yet written"
-  end
-
-  test "Should redirect new if not signed in" do
-    flunk "test is not yet written"
-  end
-
-  test "Should redirect destroy if not signed in" do
-    flunk "test is not yet written"
-  end
-
-  test "Should redirect index if not signed in" do
-    flunk "test is not yet written"
+  test "should redirect destroy if wrong user" do
+    log_in_as(@other_user)
+    assert_no_difference "@item.locations.count" do
+      delete item_location_path(@item, @first_location)
+    end
+    assert_not flash.empty?
+    assert_redirected_to item_path(@item)
   end
   #--------------------------------------------------
 
-
-  #-----------should do actions----------------------
-  test "new should render new items_location view" do
-    flunk "test is not yet written"
+  # ------------------not logged in ----------
+  test "should redirect create if not logged in" do
+    assert_no_difference "@item.locations.count" do
+      post item_locations_path(@item), params: {location_id: @second_location.id}
+    end
+    assert_not flash.empty?
+    assert_redirected_to login_path
   end
 
-  test "Should create new items_location with correct info" do
-    flunk "test is not yet written"
+  test "should redirect new if not logged in" do
+    get item_locations_path(@item)
+    assert_not flash.empty?
+    assert_redirected_to login_path
   end
 
-  test "should not create new items_location with incorrect info" do
-    flunk "test is not yet written"
+  test "should redirect destroy if not logged in" do
+    assert_no_difference "@item.locations.count" do
+      delete item_location_path(@item, @second_location)
+    end
+    assert_not flash.empty?
+    assert_redirected_to login_path
   end
 
-  test "Should destroy items_location" do
-    flunk "test is not yet written"
+  test "should redirect index if not logged in" do
+    get item_locations_path(@item)
+    assert_not flash.empty?
+    assert_redirected_to login_path
+  end
+  #--------------------------------------------------
+
+
+  #-----------correct, logged in user----------------------
+  test "new should get new item_location" do
+    log_in_as @admin_user
+    get new_item_location_path(@item)
+    assert_response :success
+    assert_template :new
   end
 
-  test "index should show items_location" do
-    flunk "test is not yet written"
+  test "should add item to location" do
+    log_in_as @admin_user
+    assert_difference "@item.locations.count", 1 do
+      post item_locations_path(@item), params: {location_id: @second_location.id}
+    end
+    assert_redirected_to item_locations_path(@item)
+  end
+
+  test "should not add item if already in location" do
+    log_in_as @admin_user
+    assert_no_difference "@item.locations.count" do
+      post item_locations_path(@item), params: {location_id: @first_location.id}
+    end
+    assert_redirected_to item_locations_path(@item)
+  end
+
+  test "should remove item from location" do
+    log_in_as @admin_user
+    assert_difference "@item.locations.count", -1 do
+      delete item_location_path(@item, @first_location)
+    end
+    assert_redirected_to item_locations_path(@item)
+  end
+
+  test "index should show locations containing item" do
+    log_in_as @admin_user
+    get item_locations_path(@item)
+    assert_response :success
   end
 end

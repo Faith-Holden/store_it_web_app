@@ -41,7 +41,7 @@ class UserTest < ActiveSupport::TestCase
     flunk "test is not yet written"
   end
 
-  test "crudable_access_location_tree gets all sublocations that a user can crud" do
+  test "crudable_descendants gets all sublocations that a user can crud" do
     flunk "test is not yet written"
   end
 

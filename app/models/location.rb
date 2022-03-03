@@ -22,22 +22,70 @@ class Location < ApplicationRecord
     self.destroy
   end
 
-  def add_item(item)
-    self.items << item
+  def add_item(item, quantity=1)
+    if self.items.include?(item)
+      ItemLocation.where(location_id: self.id)
+      &.find_by(item_id: item.id)
+      &.increment_quantity(quantity)
+    else
+      self.items << item
+    end
   end
 
   def visible_sublocations(user)
     if user.is_sys_admin?
       return self.sublocations
     end
-    access_group_ids = UserAccess.has_user(user)
-                                  &.can_crud_location_access
-                                  &.pluck(:access_group_id)
-    location_ids = LocationAccess.where(location_id: self.id)
-                              &.where(access_group_id: access_group_ids)
-                              &.pluck(:location_id)
-    self.sublocations&.where(id: location_ids)
+    visible_sublocations = Array.new
+    self.sublocations.each do |sublocation|
+      visible_sublocations << sublocation if sublocation.is_visible?(user)
+    end
+    return visible_sublocations
+    
+    
+    # access_group_ids = UserAccess.has_user(user)
+    #                               &.can_crud_location_access
+    #                               &.pluck(:access_group_id)
+    # location_ids = LocationAccess.where(access_group_id: access_group_ids)
+    #                           &.pluck(:location_id)
+    # self.sublocations&.where(id: location_ids)
   end
+
+  def visible_descendants(user)
+    descendants = self.descendants
+    if user.is_sys_admin?
+      return descendants
+    end
+    visible_descendants = Array.new
+    descendants.each do |descendant|
+      if descendant.is_visible?(user)
+        visible_descendants << descendant
+      end
+    end
+    return visible_descendants
+  end
+
+  def descendants
+      descendants = Array.new
+      children = self.sublocations
+      # base case
+      if children.empty?
+        loc_array = Array.new
+        loc_array << self
+        return loc_array
+      # otherwise
+      else
+        children.each do |child|
+          result = child.descendants
+          descendants << result
+          descendants.flatten!
+        end
+        descendants << self
+        return descendants
+      end
+  end
+
+
 
   def root_visible_ancestor?(user)
     if self.parent_id.nil?
@@ -60,9 +108,14 @@ class Location < ApplicationRecord
     if user.is_sys_admin?
       return true
     end
-    access_group_ids = AccessGroup.with_user_visible_locations(user)
-    Location.locations_in_groups(access_group_ids)
-            .include?(self)
+    access_group_ids = LocationAccess.where(location_id: self.id).pluck(:access_group_id)
+    return (UserAccess.has_user(user)
+              &.where(access_group_id: access_group_ids)
+              &.where(can_see_locations: true)
+              .count) > 0
+    # access_group_ids = AccessGroup.with_user_visible_locations(user)
+    # Location.locations_in_groups(access_group_ids)
+    #         .include?(self)
   end
 
   def visible_groups(user)

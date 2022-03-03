@@ -2,14 +2,14 @@
 
 U1:
   id: 1
-  name: User1
+  name: U1
   email: user1@example.com
   password_digest: <%= User.digest("password") %>
   activated: true
 
 U2:
   id: 2
-  name: User2
+  name: U2
   email: user2@example.com
   password_digest: <%= User.digest("password") %>
   activated: true
@@ -17,7 +17,36 @@ U2:
 
 U3:
   id: 3
-  name: User3
+  name: U3
   email: user3@example.com
+  password_digest: <%= User.digest("password") %>
+  activated: true
+
+U4:
+  id: 4
+  name: U4
+  email: user4@example.com
+  password_digest: <%= User.digest("password") %>
+  activated: true
+
+U5:
+  id: 5
+  name: U5
+  email: user5@example.com
+  password_digest: <%= User.digest("password") %>
+  activated: true
+
+U6:
+  id: 6
+  name: U6
+  email: user5@example.com
+  password_digest: <%= User.digest("password") %>
+  activated: true
+
+
+unactivated:
+  id: 1000
+  name: unactivated
+  email: unactivateduser@example.com
   password_digest: <%= User.digest("password") %>
   activated: false

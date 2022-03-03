@@ -1,8 +1,12 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# IA1:
-#   access_group_id: 1
-#   item_id: 1
-# IA2:
-#   access_group_id: 1
-#   item_id: 2
+IA1:
+  access_group_id: 1
+  item_id: 1
+  num_of_locations: 2
+
+IA2:
+  access_group_id: 1
+  item_id: 2
+  num_of_locations: 1
+

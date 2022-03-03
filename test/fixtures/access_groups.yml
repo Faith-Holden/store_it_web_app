@@ -1,24 +1,24 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-ag1:
+AG1:
   id: 1
   name: AG1
   description: "Description for AG1."
   parent_id: nil
 
-ag2:
+AG2:
   id: 2
   name: AG2
   description: "Description for AG2."
   parent_id: 1
 
-ag3:
+AG3:
   id: 3
   name: AG3
   description: "Description for AG3."
   parent_id: 1
 
-ag4:
+AG4:
   id: 4
   name: AG4
   description: "Description for AG4."

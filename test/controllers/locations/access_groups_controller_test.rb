@@ -1,60 +1,100 @@
 require 'test_helper'
 class Locations::AccessGroupsControllerTest < ActionDispatch::IntegrationTest
-   # ----tests for redirecting if wrong user ------------
-   test "Should redirect create if wrong user" do
-    flunk "test is not yet written"
+  def setup
+    @admin_user = users(:U1)
+    @other_user = users(:U4)
+    @first_access_group = access_groups(:AG1)
+    @third_group = access_groups(:AG3)
+    @location = locations(:L1)
+    @first_access_group.add_location(@location)
   end
 
-  test "Should redirect new if wrong user" do
-    flunk "test is not yet written"
+  # ------------------wrong user ------------
+  test "should redirect create if wrong user" do
+    log_in_as(@other_user)
+    assert_no_difference "@location.access_groups.count" do
+      post location_access_groups_path(@location), params: {access_group_id: @third_group.id}
+    end
+    assert_not flash.empty?
+    assert_redirected_to location_access_groups_path(@location)
   end
-
-  test "Should redirect destroy if wrong user" do
-    flunk "test is not yet written"
-  end
-
-  test "Should redirect index if wrong user" do
-    flunk "test is not yet written"
-  end
-  #--------------------------------------------------
-
-  # --tests for redirecting if not logged in ----------
-  test "Should redirect create if not signed in" do
-    flunk "test is not yet written"
-  end
-
-  test "Should redirect new if not signed in" do
-    flunk "test is not yet written"
-  end
-
-  test "Should redirect destroy if not signed in" do
-    flunk "test is not yet written"
-  end
-
-  test "Should redirect index if not signed in" do
-    flunk "test is not yet written"
+  
+  test "should redirect destroy if wrong user" do
+    log_in_as(@other_user)
+    assert_no_difference "@location.access_groups.count" do
+      delete location_access_group_path(@location, @first_access_group)
+    end
+    assert_not flash.empty?
+    assert_redirected_to location_access_groups_path(@location)
   end
   #--------------------------------------------------
 
-
-  #-----------should do actions----------------------
-  test "new should render new access_group_locations view" do
-    flunk "test is not yet written"
+  # ------------------not logged in ----------
+  test "should redirect create if not logged in" do
+    assert_no_difference "@location.access_groups.count" do
+      post location_access_groups_path(@location), params: {access_group_id: @third_group.id}
+    end
+    assert_not flash.empty?
+    assert_redirected_to login_path
   end
 
-  test "Should create new location_access with correct info" do
-    flunk "test is not yet written"
+  test "should redirect new if not logged in" do
+    get new_access_group_location_path(@location)
+    assert_not flash.empty?
+    assert_redirected_to login_path
   end
 
-  test "should not create new location_access with incorrect info" do
-    flunk "test is not yet written"
+  test "should redirect destroy if not logged in" do
+    assert_no_difference "@location.access_groups.count" do
+      delete location_access_group_path(@location, @third_group)
+    end
+    assert_not flash.empty?
+    assert_redirected_to login_path
   end
 
-  test "Should destroy location_access" do
-    flunk "test is not yet written"
+  test "should redirect index if not logged in" do
+    get location_access_groups_path(@location)
+    assert_not flash.empty?
+    assert_redirected_to login_path
+  end
+  #--------------------------------------------------
+
+
+  #-----------correct, logged in user----------------------
+  test "new should get new location_access_groups" do
+    log_in_as @admin_user
+    get new_location_access_group_path(@location)
+    assert_response :success
+    assert_template :new
   end
 
-  test "index should show location_access" do
-    flunk "test is not yet written"
+  test "should add location to access_group" do
+    log_in_as @admin_user
+    assert_difference "@location.access_groups.count", 1 do
+      post location_access_groups_path(@location), params: {access_group_id: @third_group.id}
+    end
+    assert_redirected_to location_access_groups_path(@location)
+  end
+
+  test "should not add location if already in group" do
+    log_in_as @admin_user
+    assert_no_difference "@location.access_groups.count" do
+      post location_access_groups_path(@location), params: {access_group_id: @first_access_group.id}
+    end
+    assert_redirected_to location_access_groups_path(@location)
+  end
+
+  test "should remove location from group" do
+    log_in_as @admin_user
+    assert_difference "@location.access_groups.count", -1 do
+      delete location_access_group_path(@location, @first_access_group)
+    end
+    assert_redirected_to location_access_groups_path(@location)
+  end
+
+  test "index should show locations in access_group" do
+    log_in_as @admin_user
+    get location_access_groups_path(@location)
+    assert_response :success
   end
 end

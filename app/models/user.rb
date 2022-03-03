@@ -19,6 +19,7 @@ class User < ApplicationRecord
 
   has_secure_password
 
+  
   # -------------------------Getters ----------------------------
   # returns an array of items that a user can see
   def items
@@ -34,23 +35,25 @@ class User < ApplicationRecord
     all_items = all_items.uniq
   end
 
-  def crudable_access_location_tree(location)
-    crudable_descendants = Array.new
-    children = location.visible_sublocations(self)
-    # base case
-    if children.empty?
-      return location
-    # otherwise
-    else
-      children.each do |child|
-        result = crudable_access_location_tree(child)
-        crudable_descendants << result
-        crudable_descendants.flatten!
-      end
-      crudable_descendants << location
-      return crudable_descendants
-    end
-  end
+  # def crudable_access_location_tree(location)
+  #   crudable_descendants = Array.new
+  #   children = location.visible_sublocations(self)
+  #   # base case
+  #   if children.empty?
+  #     loc_array = Array.new
+  #     loc_array << location
+  #     return loc_array
+  #   # otherwise
+  #   else
+  #     children.each do |child|
+  #       result = crudable_access_location_tree(child)
+  #       crudable_descendants << result
+  #       crudable_descendants.flatten!
+  #     end
+  #     crudable_descendants << location
+  #     return crudable_descendants
+  #   end
+  # end
 
   def visible_ancestor_locations
     locations = Array.new
@@ -84,17 +87,17 @@ class User < ApplicationRecord
   end
 
   def groups_user_can_crud_subgroup
-    user_accesses = UserAccess.has_user(self).can_crud_subgroup
+    user_accesses = UserAccess.has_user(self)&.can_crud_subgroup&.pluck(:access_group_id)
     AccessGroup.where(id: user_accesses)
   end
 
   def groups_user_can_crud_location_access
-    user_accesses = UserAccess.has_user(self).can_crud_location_access
+    user_accesses = UserAccess.has_user(self)&.can_crud_location_access&.pluck(:access_group_id)
     AccessGroup.where(id: user_accesses)
   end
 
   def groups_user_can_crud_item_access
-    user_accesses = UserAccess.has_user(self).can_crud_item_access
+    user_accesses = UserAccess.has_user(self)&.can_crud_item_access&.pluck(:id)
     AccessGroup.where(id: user_accesses)
   end
 
@@ -137,6 +140,18 @@ class User < ApplicationRecord
     return false if user_access.nil?
     return user_access.can_crud_user_access
   end
+  
+  def can_crud_location_access?(access_group)
+    user_access = UserAccess.group_with_user(access_group, self)
+    return false if user_access.nil?
+    return user_access.can_crud_location_access
+  end
+
+  def can_crud_item_access?(access_group)
+    user_access = UserAccess.group_with_user(access_group, self)
+    return false if user_access.nil?
+    return user_access.can_crud_item_access
+  end
 
   def can_see_locations_in_group?(access_group)
     user_access = UserAccess.group_with_user(access_group, self)
@@ -158,11 +173,22 @@ class User < ApplicationRecord
     UserPermission.find_by(user_id: self.id).is_sys_admin
   end
 
+  def is_group_admin?(access_group)
+    user_access = UserAccess.group_with_user(access_group, self)
+    return false if user_access.nil?
+    return user_access.group_admin
+  end
+
+  def activated?
+    self.activated
+  end
+
   def authenticated?(attribute, token)
     digest = send("#{attribute}_digest")
     return false if digest.nil?
     BCrypt::Password.new(digest).is_password?(token)
   end
+
   # --------------------------------------------------------------
 
   def set_user_permissions(permissions=UserPermission::DEFAULT_PERMS)

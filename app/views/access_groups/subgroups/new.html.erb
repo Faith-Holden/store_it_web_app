@@ -1,11 +1,11 @@
-<%= provide(:title, "Location")%>
-<h1>Add Sublocation</h1>
+<%= provide(:title, "Subgroup")%>
+<h1>Add Subgroup</h1>
 
-<%= form_with(url: "/locations/#{@location.id}/sublocations", local: true) do |f|%>
+<%= form_with(url: "/locations/#{@access_group.id}/subgroups", local: true) do |f|%>
   <%= f.label :name %>
   <%= f.text_field :name, class: 'form_control'%>
 
-  <%= hidden_field_tag 'parent_id', @location.id %>
+  <%= hidden_field_tag 'parent_id', @access_group.id %>
 
   <%= f.submit "Submit", class: "btn btn-primary"%>
 <% end%>

@@ -1,8 +1,21 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# one:
-#   location_id: 1
-#   access_group_id: 1
-# two:
-#   location_id: 1
-#   access_group_id: 2
+LA6_1:
+  location_id: 6
+  access_group_id: 1
+
+LA1_2:
+  location_id: 1
+  access_group_id: 2
+
+LA3_2:
+  location_id: 3
+  access_group_id: 2
+
+LA4_2:
+  location_id: 4
+  access_group_id: 2
+
+LA5_1:
+  location_id: 5
+  access_group_id: 1

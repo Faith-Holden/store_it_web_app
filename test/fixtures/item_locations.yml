@@ -1,6 +1,39 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# one: 
-#   item_id: 1
-# two:
-#   item_id: 2
+
+
+IL1:
+  id: 1
+  location_id: 4
+  item_id: 1
+  quantity: 3
+
+IL2:
+  id: 2
+  location_id: nil
+  item_id: 1
+  quantity: 1
+
+IL3:
+  id: 3
+  location_id: 5
+  item_id: 2
+  quantity: 3
+
+IL4:
+  id: 4
+  location_id: 6
+  item_id: 1
+  quantity: 1
+
+IL5:
+  id: 5
+  location_id: 1
+  item_id: 3
+  quantity: 1
+
+IL6:
+  id: 6
+  location_id: 5
+  item_id: 1
+  quantity: 1
