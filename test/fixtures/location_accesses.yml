@@ -19,3 +19,7 @@ LA4_2:
 LA5_1:
   location_id: 5
   access_group_id: 1
+
+LA3_1:
+  location_id: 2
+  access_group_id: 3

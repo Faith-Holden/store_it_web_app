@@ -16,8 +16,8 @@ class AccessGroupTest < ActiveSupport::TestCase
   end
 
   test "name should not be too long" do
-    first_new_access_group = AccessGroup.new(:name => "a" * 51)
-    assert_not @first_new_access_group.valid?
+    new_access_group = AccessGroup.new(:name => "a" * 51)
+    assert_not new_access_group.valid?
   end
 
   test "creates inherited user_accesses after create" do
@@ -36,7 +36,7 @@ class AccessGroupTest < ActiveSupport::TestCase
   end
 
   test "add_location adds location" do
-    location_to_add = locations(:L5)
+    location_to_add = locations(:L1)
     assert_difference '@main_access_group.locations.count', 1 do
       @main_access_group.add_location(location_to_add)
     end
@@ -67,29 +67,29 @@ class AccessGroupTest < ActiveSupport::TestCase
   end
 
   test "add_location also adds items in location" do
-    assert_difference '@main_access_group.items.count', 2 do
-      @main_access_group.add_location(locations(:L5))
+    assert_difference '@main_access_group.items.count', 1 do
+      @main_access_group.add_location(locations(:L1))
     end
   end
 
   
   test "remove_location also removes items in location" do
     assert_difference '@main_access_group.items.count', -1 do
-      @main_access_group.remove_location(locations(:L6))
+      @main_access_group.remove_location(locations(:L5))
     end
   end
 
 
   test "add item with nil location adds item" do
     assert_difference '@main_access_group.items.count', 1 do
-      @main_access_group.add_item(items(:I2))
+      @main_access_group.add_item(items(:I4))
     end
   end
 
   
   test "add item with location adds item" do
     assert_difference '@main_access_group.items.count', 1 do
-      @main_access_group.add_item(items(:I3))
+      @main_access_group.add_item(items(:I3), locations(:L3))
     end
   end
 
@@ -120,36 +120,78 @@ class AccessGroupTest < ActiveSupport::TestCase
 
 
   test "admin_users returns all admins" do
-    # admin_count = 0
-    # @main_access_group.users.each do |user|
-    flunk ' test not written yet.'
+    manual_admins = Array.new 
+    @main_access_group.users.each do |user|
+      if user.is_group_admin?(@main_access_group) || user.is_sys_admin?
+        manual_admins << user
+      end
+    end
+    assert_not manual_admins.to_a.
+                          difference(@main_access_group.admin_users)
+                          .any?
   end
 
   test "admin_users does not return non-admins" do
-    flunk ' test not written yet.'
+    assert @main_access_group.admin_users.all?{|user| user.is_group_admin?(@main_access_group) || user.is_sys_admin?}
   end
 
   test "add_user should add user" do
-    flunk ' test not written yet.'
+    new_user = users(:U5)
+    assert_not @main_access_group.users.include?(new_user)
+    assert_difference '@main_access_group.users.count', 1 do
+      @main_access_group.add_user(new_user)
+    end
+    assert @main_access_group.users.include?(new_user)
+  end
+
+  test "remove_user should remove user" do
+    user_to_remove = users(:U1)
+    assert @main_access_group.users.include?(user_to_remove)
+    assert_difference '@main_access_group.users.count', -1 do
+      @main_access_group.remove_user(user_to_remove)
+    end
+    assert_not @main_access_group.users.include?(user_to_remove)
   end
 
   test "with_user_visible_locations should only return ids of groups with visible locations" do
-    flunk ' test not written yet.'
+    user = users(:U2)
+    ids = AccessGroup.with_user_visible_locations(user)
+    user_accesses = UserAccess.where(access_group_id: ids)
+                              &.has_user(user)
+    assert user_accesses.to_a
+                        .all? {|user_access| user_access.can_see_locations}
   end
   
   test "with_user_visible_items should only return ids of groups with visible items" do
-    flunk ' test not written yet.'
+    user = users(:U2)
+    ids = AccessGroup.with_user_visible_items(user)
+    user_accesses = UserAccess.where(access_group_id: ids)
+                              &.has_user(user)
+    assert user_accesses.to_a
+                        .all? {|user_access| user_access.can_see_items}
   end
 
   test "with_user_visible_items_and_locations should only return ids of groups with visible items and locations" do
-    flunk ' test not written yet.'
+    user = users(:U2)
+    ids = AccessGroup.with_user_visible_items_and_locations(user)
+    user_accesses = UserAccess.where(access_group_id: ids)
+                              &.has_user(user)
+    assert user_accesses.to_a
+                        .all? {|user_access| user_access.can_see_locations}
+    assert user_accesses.to_a
+                        .all? {|user_access| user_access.can_see_items}
   end
 
   test "visible_groups should only return ids of visible groups" do
-    flunk ' test not written yet.'
+    user = users(:U2)
+    ids = AccessGroup.visible_groups(user)
+    user_accesses = UserAccess.where(access_group_id: ids)
+                              &.has_user(user)
+    assert user_accesses.to_a
+                        .all? {|user_access| user_access.can_see_group}
   end
   
   test "create_user_accesses should create accessess for each admin" do
-    flunk ' test not written yet.'
+    # currently, logic is covered in the test "creates inherited user_accesses after create"
   end
 end

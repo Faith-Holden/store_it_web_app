@@ -2,24 +2,27 @@ require "test_helper"
 
 class ItemTest < ActiveSupport::TestCase
   def setup
-    @item = Item.new(name: "Item")
+    @new_item = Item.new(name: "Item")
   end
 
   test "should be valid" do
-    assert @item.valid?
+    assert @new_item.valid?
   end
 
   test "name should be present" do
-    @item.name = "    "
-    assert_not @item.valid?
+    @new_item.name = "    "
+    assert_not @new_item.valid?
   end
 
   test "name should not be too long" do
-    @item.name = "a" * 51
-    assert_not @item.valid?
+    @new_item.name = "a" * 51
+    assert_not @new_item.valid?
   end
 
-  test "image should be valid" do
+  test "visible_locations should return all visible locations" do
+    # user = users(:U2)
+    # manual_locations = Array.new
+    
     flunk "test is not yet written"
   end
 
@@ -27,15 +30,14 @@ class ItemTest < ActiveSupport::TestCase
     flunk "test is not yet written"
   end
 
-  test "locationless? should only return items without location" do
-    flunk "test is not yet written"
-  end
-
-  test "add_to_location should add item to location" do
-    flunk "test is not yet written"
+  test "locationless? should only be only be true for items without location" do
+    assert items(:I5).locationless?
+    assert_not items(:I1).locationless?
   end
 
   test "set_item_location should create item_locations" do
-    flunk "test is not yet written"
+    assert_difference 'ItemLocation.count', 1 do
+      items(:I5).set_item_location(locations(:L1))
+    end
   end
 end

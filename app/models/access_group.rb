@@ -79,6 +79,12 @@ class AccessGroup < ApplicationRecord
     end
   end
 
+  def remove_user(user)
+    UserAccess.has_user(user)
+    &.find_by(access_group_id: self.id)
+    &.destroy
+  end
+
   def admin_users
     ids = UserAccess.is_group_admin
                      .where(access_group_id: self.id).pluck(:user_id)

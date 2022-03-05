@@ -43,6 +43,13 @@ U6:
   password_digest: <%= User.digest("password") %>
   activated: true
 
+U7:
+  id: 7
+  name: U7
+  email: user5@example.com
+  password_digest: <%= User.digest("password") %>
+  activated: true
+
 
 unactivated:
   id: 1000

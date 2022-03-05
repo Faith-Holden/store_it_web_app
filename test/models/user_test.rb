@@ -2,55 +2,75 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(name: "User Name", email: "test@email.com", password: "foobar")
+    @new_user = User.new(name: "User Name", email: "test@email.com", password: "foobar")
   end
 
   test "should be valid" do
-    assert @user.valid?
+    assert @new_user.valid?
   end
 
   test "name should be present" do
-    @user.name = "    "
-    assert_not @user.valid?
+    @new_user.name = "    "
+    assert_not @new_user.valid?
   end
 
   test "name should not be too long" do
-    @user.name = "a" * 51
-    assert_not @user.valid?
+    @new_user.name = "a" * 51
+    assert_not @new_user.valid?
   end
 
   test "email should be present" do
-    @user.email = "    "
-    assert_not @user.valid?
+    @new_user.email = "    "
+    assert_not @new_user.valid?
   end
 
   test "email should not be too long" do
-    @user.email = "a" * 201
-    assert_not @user.valid?
-  end
-
-  test "email should be valid" do
-    flunk "test is not yet written"
+    @new_user.email = "a" * 201
+    assert_not @new_user.valid?
   end
 
   test "sys admin should see all items" do
-    flunk "test is not yet written"
+    user = users(:U1)
+    assert user.is_sys_admin?
+    assert user.items.count == Item.count
   end
 
   test "non-admin should see only restricted items" do
-    flunk "test is not yet written"
-  end
+    user = users(:U4)
+    assert_not user.is_sys_admin?
+    user_items = user.items
+    user_access_groups = user.access_groups.to_a
 
-  test "crudable_descendants gets all sublocations that a user can crud" do
-    flunk "test is not yet written"
+    assert user_items.count < Item.count
+    items_are_correct = true
+    user_items.each do |item|
+      if item.access_groups.none?{|group| user_access_groups.include?(group)}
+        items_are_correct = false
+        break
+      end
+    end
   end
 
   test "visible_ancestor_locations gets all location ancestors user can see" do
-    flunk "test is not yet written"
+    user = users(:U3)
+    ancestors = user.visible_ancestor_locations
+    correct_result = true
+    ancestors.each do |location|
+      correct_result = location.is_root_visible_ancestor?(user)
+      unless correct_result
+        break
+      end
+    end
+    assert correct_result
   end
 
   test "visible_access_groups should get all groups user has view access in" do
-    flunk "test is not yet written"
+    user = users(:U3)
+    visible_groups = user.visible_access_groups.to_a
+    user_accesses = UserAccess.has_user(user)
+                              &.can_see_group
+                              .to_a
+    assert_not visible_groups.difference(user_accesses).any?
   end
 
   test "should get all locations that are visible and have visible items for user" do

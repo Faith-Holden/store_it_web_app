@@ -131,3 +131,16 @@ Group4User2:
   can_crud_subgroups: 1
   can_crud_item_access: 1
   can_crud_location_access: 1
+
+Group2User3:
+  user_id: 7
+  access_group_id: 3
+  group_admin: 0
+  can_see_group: 1
+  can_see_items: 1
+  can_see_locations: 1
+  can_crud_group: 0
+  can_crud_user_access: 0
+  can_crud_subgroups: 0
+  can_crud_item_access: 0
+  can_crud_location_access: 0

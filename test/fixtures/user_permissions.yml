@@ -27,9 +27,36 @@ UA3:
   can_crud_locations_with_parent: 0
   can_crud_locations_no_parent: 0
 
-UA3:
+UA4:
   id: 4
   user_id: 4
+  is_sys_admin: 0
+  can_crud_items: 0
+  can_crud_access_group_no_parent: 0
+  can_crud_locations_with_parent: 0
+  can_crud_locations_no_parent: 0
+
+UA5:
+  id: 5
+  user_id: 5
+  is_sys_admin: 0
+  can_crud_items: 0
+  can_crud_access_group_no_parent: 0
+  can_crud_locations_with_parent: 0
+  can_crud_locations_no_parent: 0
+
+UA6:
+  id: 6
+  user_id: 6
+  is_sys_admin: 0
+  can_crud_items: 0
+  can_crud_access_group_no_parent: 0
+  can_crud_locations_with_parent: 0
+  can_crud_locations_no_parent: 0
+
+UA7:
+  id: 7
+  user_id: 7
   is_sys_admin: 0
   can_crud_items: 0
   can_crud_access_group_no_parent: 0

@@ -4,15 +4,15 @@ class Location < ApplicationRecord
   has_many :sublocations, class_name: "Location", foreign_key: "parent_id"
   belongs_to :parent, class_name: "Location", optional: true
 
-  has_many :item_locations
+  has_many :item_locations, dependent: :destroy
   has_many :items, through: :item_locations
 
-  has_many :location_accesses
+  has_many :location_accesses, dependent: :destroy
   has_many :access_groups, through: :location_accesses
 
   
   def add_sublocation(sublocation)
-    self.locations<<sublocation #should this be self.sublocations?
+    self.sublocations<<sublocation
   end
   
   def destroy_location
@@ -88,6 +88,7 @@ class Location < ApplicationRecord
 
 
   def root_visible_ancestor?(user)
+    # debugger
     if self.parent_id.nil?
       return true
     end

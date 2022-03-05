@@ -37,3 +37,9 @@ IL6:
   location_id: 5
   item_id: 1
   quantity: 1
+
+IL7:
+  id: 7
+  location_id: nil
+  item_id: 5
+  quantity: 1

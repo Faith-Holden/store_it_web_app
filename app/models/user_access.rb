@@ -21,7 +21,7 @@ class UserAccess < ApplicationRecord
 
   scope :can_crud_location_access, ->{ where(can_crud_location_access: true ) }
   scope :can_crud_subgroup, ->{ where(can_crud_subgroups: true ) }
-  scope :can_crud_group, ->{ where(can_crud_groups: true ) }
+  scope :can_crud_group, ->{ where(can_crud_group: true ) }
   scope :can_crud_item_access, ->{ where(can_crud_item_access: true ) }
   scope :is_group_admin, ->{where(group_admin: true)}
   scope :has_user, ->(user) {where(user_id: user.id)}
