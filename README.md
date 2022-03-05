@@ -24,8 +24,6 @@ An administrative user(email: "example@example.com", password: "foobar" and seve
  non-administrative users(email: "example-#{n}@example.com", password: "password") are also created.
 For best results, log in as the administrative user, or use the commandline rails console to grant your preferred
 user administrative privaleges. To easily grant your user admin permissions:
-```
-1) Retrieve your user (e.g. by running "my_user = User.find_by(:email, "my_user_email@email.com")
-2) Run "my_user.set_permissions(UserPermissions::SYS_ADMIN_PERMS)"
+* Retrieve your user (e.g. by running "my_user = User.find_by(:email, "my_user_email@email.com")
+* Run "my_user.set_permissions(UserPermissions::SYS_ADMIN_PERMS)"
 (e.g. "User.find_by(email: #{my_user_email}).set_permissions(UserPermission::SYS_ADMIN_PERMS))
-```
