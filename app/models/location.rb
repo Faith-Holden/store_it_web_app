@@ -1,5 +1,9 @@
 class Location < ApplicationRecord
   validates :name, presence: true, length: {maximum: 50}
+  validates :image, content_type: { in: %w[image/jpeg image/gif image/png],
+                                    message: "must be a valid image format" },
+                                    size: { less_than: 5.megabytes,
+                                     message: "should be less than 5MB" }
 
   has_many :sublocations, class_name: "Location", foreign_key: "parent_id"
   belongs_to :parent, class_name: "Location", optional: true
@@ -10,7 +14,8 @@ class Location < ApplicationRecord
   has_many :location_accesses, dependent: :destroy
   has_many :access_groups, through: :location_accesses
 
-  
+  has_one_attached :image
+
   def add_sublocation(sublocation)
     self.sublocations<<sublocation
   end

@@ -1,13 +1,14 @@
 <% provide(:title, "Items")%>
-<h1>Access Groups with Item: <%= "#{@item.name}"%></h1>
-<%= link_to "Add to Access Group", new_item_access_group_path%>
-<ul>
-  <% @access_groups.each do |access_group|%>
-    <%= render layout: '/access_groups/access_groups/access_group', :locals => {:access_group => access_group} do %>
-      <% if @current_user.can_crud_item_access?(access_group)%>
-        |    <%= link_to "Remove From Group", item_access_group_path(@item, access_group), method: :delete,
-                                        data: { confirm: "Are you sure?" } %>
-      <% end %>
+<% provide(:header_text, "Groups with Item: #{@item.name}")%>
+
+<%= button_to "Add to Group", new_item_access_group_path(@item), method: :get, class: "button-new"%>
+
+<% @access_groups.each do |access_group| %>
+  <% content_for :indexed_delete_button, flush: true do %>
+    <% if @current_user.can_crud_item_access?(access_group)%>
+      <% link_to "Remove Item from Group", item_access_group_path(@item, access_group), method: :delete,
+                                                data: {confirm: "Are you sure?"} %>
     <% end %>
   <% end %>
-</ul>
+  <%= render partial: 'access_groups/access_groups/indexed_access_group', :locals => {:access_group => access_group}%>
+<% end %>

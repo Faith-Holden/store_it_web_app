@@ -1,0 +1,22 @@
+<div class="sidebar">
+  <div class= "sidebar-links">
+    <ul>
+      <% if logged_in?%>
+        <li><%= link_to "Users", users_path%></li>
+        <li><%= link_to "My Groups", access_groups_path%></li>
+        <li><%= link_to "My Items", items_path%></li>
+        <li><%= link_to "My Locations", locations_path%></li>
+        <li><%= link_to "My Profile", @current_user%></li>
+        <li><%= link_to "Log Out", logout_path, method: :delete%></li>
+      <% else %>
+        <li><%= link_to "Log In", login_path%></li>
+      <% end %>
+    </ul>
+
+    <ul class = "static-page-links">
+      <li><%= link_to "Home", root_url%></li>
+      <li><%= link_to "About", about_path%></li>
+      <li><%= link_to "Help", help_path%></li>
+    </ul>
+  </div>
+</div>

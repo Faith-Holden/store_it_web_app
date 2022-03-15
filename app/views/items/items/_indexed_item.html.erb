@@ -1,6 +1,18 @@
-<%= render layout: '/items/items/item', :locals => {:item => item} do %>
-  <% if @current_user.can_crud_items? %>
-    |    <%= link_to "delete", item, method: :delete,
-                                      data: { confirm: "Are you sure?" } %>
-  <% end %>
+<% content_for :card_title, flush: true do %>
+  <%= link_to item.name, item_path(item)%>
 <% end %>
+<% content_for :card_description, flush: true do %>
+  <span class = "description-heading">Description:</span>
+  <%= item.description%>
+<% end %>
+<% content_for :card_bottom_tray, flush: true do %>
+  <ul>
+    <li><%= link_to "Access Groups", item_access_groups_path(item)%></li>
+    <li><%= link_to 'Locations', item_locations_path(item)%></li>
+    <li><%= yield :indexed_delete_button%></li>
+  <ul>
+<% end %>
+<% content_for :card_image, flush: true do  %>
+  <%= image_tag item.image if item.image.attached? %>
+<% end %>
+<%= render 'layouts/element_card'%>

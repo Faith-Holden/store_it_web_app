@@ -1,9 +1,13 @@
 <% provide(:title, "Groups")%>
-<h1>Access Groups</h1>
-<%= link_to "New Group", new_access_group_path%>
-<ul class = "Access Groups">
-  <% @access_groups.each do |access_group|%>
-    <%= render :partial => "/access_groups/access_groups/indexed_access_group",:locals => {:access_group => access_group} %>
-  <% end%>
-</ul>
+<% provide(:header_text, "My Access Groups")%>
 
+<% if@current_user.is_sys_admin?%>
+  <%= button_to "New", new_access_group_path, method: :get, class: "button-new"%>
+<% end %>
+
+<% @access_groups.each do |access_group| %>
+  <% content_for :indexed_delete_button, flush: true do %>
+    <% link_to "Delete", access_group_path(access_group), method: :delete%>
+  <% end %>
+  <%= render partial: 'indexed_access_group', :locals => {:access_group => access_group}%>
+<% end %>

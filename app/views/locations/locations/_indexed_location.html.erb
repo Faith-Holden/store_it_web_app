@@ -1,6 +1,18 @@
-<%= render layout: '/locations/locations/location', :locals => {:location => location} do %>
-  <% if @current_user.can_crud_non_root_location? %>
-    |    <%= link_to "delete", location, method: :delete,
-                                      data: { confirm: "Are you sure?" } %>
-  <% end %>
+<% content_for :card_title, flush: true do %>
+  <%= link_to location.name, location_path(location)%>
 <% end %>
+<% content_for :card_description, flush: true do %>
+  <span class = "description-heading">Description:</span>
+  <%= location.description%>
+<% end %>
+<% content_for :card_bottom_tray, flush: true do %>
+  <ul>
+    <li><%= link_to "Access Groups", location_access_groups_path(location)%></li>
+    <li><%= link_to 'Items', location_items_path(location)%></li>
+    <li><%= yield :indexed_delete_button%></li>
+  <ul>
+<% end %>
+<% content_for :card_image, flush: true do  %>
+  <%= image_tag location.image if location.image.attached? %>
+<% end %>
+<%= render 'layouts/element_card'%>

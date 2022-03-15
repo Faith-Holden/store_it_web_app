@@ -11,6 +11,10 @@ class User < ApplicationRecord
                    length: {maximum: 100},
                    format: {with: VALID_EMAIL_REGEX},
                    uniqueness: true
+  validates :image, content_type: { in: %w[image/jpeg image/gif image/png],
+                    message: "must be a valid image format" },
+                    size: { less_than: 5.megabytes,
+                    message: "should be less than 5MB" }
   validates :password, presence: true, length: { minimum: 6}, allow_nil: true
 
   before_save :downcase_email
@@ -18,6 +22,7 @@ class User < ApplicationRecord
   after_create :create_user_perms
 
   has_secure_password
+  has_one_attached :image
 
   
   # -------------------------Getters ----------------------------
@@ -34,26 +39,6 @@ class User < ApplicationRecord
     end
     all_items = all_items.uniq
   end
-
-  # def crudable_access_location_tree(location)
-  #   crudable_descendants = Array.new
-  #   children = location.visible_sublocations(self)
-  #   # base case
-  #   if children.empty?
-  #     loc_array = Array.new
-  #     loc_array << location
-  #     return loc_array
-  #   # otherwise
-  #   else
-  #     children.each do |child|
-  #       result = crudable_access_location_tree(child)
-  #       crudable_descendants << result
-  #       crudable_descendants.flatten!
-  #     end
-  #     crudable_descendants << location
-  #     return crudable_descendants
-  #   end
-  # end
 
   def visible_ancestor_locations
     locations = Array.new

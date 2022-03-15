@@ -1,13 +1,15 @@
 <% provide(:title, "Items")%>
-<h1>Items in Location: <%= "#{@location.name}"%></h1>
-<%= link_to "Add an Item", new_location_item_path%>
-<ul>
-   <%@items.each do |item|%>
-    <%= render layout: '/items/items/item', :locals => {:item => item} do %>
-      <% if @current_user%> <%#need a better permission for this.%>
-        |    <%= link_to "Remove Item", location_item_path(@location, item), method: :delete,
-                                        data: { confirm: "Are you sure?" } %>
-      <% end %>
-    <% end %>
+<% provide(:header_text, "Items in Location: #{@location.name}")%>
+
+<% if@current_user.can_crud_items?%>
+  <%= button_to "Create New", new_item_path, method: :get, class: "button-new"%>
+<% end %>
+
+<%= button_to "Add Existing", new_location_item_path(@location), method: :get, class: "button-add"%>
+
+<% @items.each do |item| %>
+  <% content_for :indexed_delete_button, flush: true do %>
+    <% link_to "Remove item", location_item_path(@location, item), method: :delete%>
   <% end %>
-<ul>
+  <%= render partial: 'items/items/indexed_item', :locals => {:item => item}%>
+<% end %>

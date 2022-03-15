@@ -1,8 +1,13 @@
 <% provide(:title, "Locations")%>
-<h1>Locations Index</h1>
-<%= link_to "New Location", new_location_path%>
-<ul>
-   <% @locations.each do |location|%>
-    <%= render :partial => "/locations/locations/indexed_location",:locals => {:location => location} %>
-  <% end%>
-</ul>
+<% provide(:header_text, "My Locations")%>
+
+<% if@current_user.can_crud_non_root_location?%>
+  <%= button_to "New", new_location_path, method: :get, class: "button-new"%>
+<% end %>
+
+<% @locations.each do |location| %>
+  <% content_for :indexed_delete_button, flush: true do %>
+    <% link_to "Delete", location_path(location), method: :delete%>
+  <% end %>
+  <%= render partial: 'indexed_location', :locals => {:location => location}%>
+<% end %>

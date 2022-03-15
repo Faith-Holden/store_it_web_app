@@ -1,6 +1,15 @@
-  <%= render layout: '/access_groups/access_groups/access_group', :locals => {:access_group => access_group} do %>
-    <% if @current_user.can_crud_group?(access_group) %>
-      |    <%= link_to "delete", access_group, method: :delete,
-                                       data: { confirm: "Are you sure?" } %>
-    <% end %>
-  <% end %>
+<% content_for :card_title, flush: true do %>
+  <%= link_to access_group.name, access_group_path(access_group)%>
+<% end %>
+<% content_for :card_description, flush: true do %>
+  <span class = "description-heading">Description:</span>
+  <%= access_group.description%>
+<% end %>
+<% content_for :card_bottom_tray, flush: true do %>
+  <ul>
+    <li><%= link_to "Items", access_group_items_path(access_group)%></li>
+    <li><%= link_to 'Locations', access_group_locations_path(access_group)%></li>
+    <li><%= yield :indexed_delete_button%></li>
+  <ul>
+<% end %>
+<%= render 'layouts/element_card'%>

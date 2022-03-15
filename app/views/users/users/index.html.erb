@@ -1,8 +1,15 @@
-<%provide(:title, "Users")%>
-<h1>Users</h1>
-<%= link_to "New User", new_user_path%>
-<ul class="users">
-  <% @users.each do |user|%>
-    <%= render :partial => "/users/users/indexed_user",:locals => {:user => user} %>
-  <% end%>
-</ul>
+<% provide(:title, "users")%>
+<% provide(:header_text, "Users")%>
+
+<% if@current_user.is_sys_admin?%>
+  <%= button_to "New", new_user_path, method: :get, class: "button-new"%>
+<% end %>
+
+<% @users.each do |user| %>
+  <% content_for :indexed_delete_button, flush: true do %>
+    <% unless current_user?(user)%>
+      <% link_to "Delete", user_path(user), method: :delete%>
+    <% end %>
+  <% end %>
+  <%= render partial: 'indexed_user', :locals => {:user => user}%>
+<% end %>

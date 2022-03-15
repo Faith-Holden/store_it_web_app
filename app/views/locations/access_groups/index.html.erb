@@ -1,13 +1,14 @@
-<% provide(:title, "Access Groups")%>
-<h1>Groups With Location: <%= "#{@location.name}"%></h1>
-<%= link_to "Add to Group", new_location_access_group_path%>
-<ul>
-  <% @access_groups.each do |access_group|%>
-    <%= render layout: '/access_groups/access_groups/access_group', :locals => {:access_group => access_group} do %>
-      <% if @current_user.can_crud_location_access?(access_group)%>
-        |    <%= link_to "Remove From Group", location_access_group_path(@location, access_group), method: :delete,
-                                        data: { confirm: "Are you sure?" } %>
-      <% end %>
+<% provide(:title, "Locations")%>
+<% provide(:header_text, "Groups with location: #{@location.name}")%>
+
+<%= button_to "Add to Group", new_location_access_group_path(@location), method: :get, class: "button-new"%>
+
+<% @access_groups.each do |access_group| %>
+  <% content_for :indexed_delete_button, flush: true do %>
+    <% if @current_user.can_crud_location_access?(access_group)%>
+      <% link_to "Remove Location", location_access_group_path(@location, access_group), method: :delete,
+                                                data: {confirm: "Are you sure?"} %>
     <% end %>
   <% end %>
-</ul>
+  <%= render partial: 'access_groups/access_groups/indexed_access_group', :locals => {:access_group => access_group}%>
+<% end %>

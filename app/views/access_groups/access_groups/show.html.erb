@@ -1,37 +1,50 @@
 <% provide(:title, "Access Group")%>
-<div class= "jumbotron jumbotron-fluid">
-  <%=@access_group.name%>
-</div>
-<div class= "jumbotron jumbotron-fluid">
-  Parent Group ID: <%=@access_group.parent_id%>
-</div>
-
-<div class= "jumbotron jumbotron-fluid">
-  <%=link_to "Edit Access Group", edit_access_group_path(@access_group) %>
-</div>
-
-<div class= "jumbotron jumbotron-fluid">
-  <div>
-    <%# <h4> %>
-      Description:
-    <%# </h4> %>
-  </div> 
+<% provide(:header_text, "Access Group: #{@access_group.name}")%>
+<% content_for :show_image, flush: true do %>
+<% end %>
+<% content_for :show_description, flush: true do %>
+  <span class = "description-heading">Description:</span>
   <%= @access_group.description%>
-</div>
+<% end %>
+<% content_for :show_links, flush: true do %>
+  <li><%= link_to "Edit Group", edit_access_group_path(@access_group)%></li>
+  <li><%= link_to "Delete Group", access_group_path, method: :delete%></li>
+<% end %>
 
+<% content_for :show_nav, flush: true do%>
+  <a href= "#page-nav-subgroups">Subgroups</a>
+  <a href= "#page-nav-locations">Locations</a>
+  <a href= "#page-nav-items">Items</a>
+<% end %>
 
-<div class= "jumbotron jumbotron-fluid">
-  <%=link_to "Subgroups", access_group_subgroups_path(@access_group) %>
-</div>
+<% content_for :show_body, flush: true do %>
+  <div class = "show-category">
+    <a id= "page-nav-subgroups">
+    Subgroups
+    <% @access_group.subgroups.each do |subgroup|%>
+      <div class= 'show-instance'>
+        <%= subgroup.name%>
+      </div>
+    <% end %>
+  </div>
+  <div class = "show-category">
+    <a id= "page-nav-locations">
+    locations
+    <% @access_group.locations.each do |location|%>
+      <div class= 'show-instance'>
+        <%= location.name%>
+      </div>
+    <% end %>
+  </div>
+  <div class = "show-category">
+    <a id= "page-nav-items">
+    items
+    <% @access_group.items.each do |item|%>
+      <div class= 'show-instance'>
+        <%= item.name%>
+      </div>
+    <% end %>
+  </div>
+<% end %>
 
-<div class= "jumbotron jumbotron-fluid">
-  <%=link_to "Locations", access_group_locations_path(@access_group) %>
-</div>
- 
-<div class= "jumbotron jumbotron-fluid">
-  <%=link_to "Items", access_group_items_path(@access_group) %>
-</div>
-
-<div class= "jumbotron jumbotron-fluid">
-  <%=link_to "Users", access_group_users_path(@access_group) %>
-</div>
+<%= render partial: 'layouts/show_template'%>

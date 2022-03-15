@@ -1,25 +1,16 @@
-<% provide(:title, "Items")%>
-<h1>Items in Access Group: <%= "#{@access_group.name}"%></h1>
-<div>
-  <%= link_to "Add an existing Item", new_access_group_item_path%>
-</div>
-<div>
-  <%= link_to "Create a new Item", new_item_path%>
-</div>
-<ul>
-  <h3> Without a location </h3>
-  <% @locationless_items.each do |item|%>
-    <%= render layout: '/items/items/item', :locals => {:item => item} do %>
-      <% if @current_user.can_crud_item_access?(@access_group)%>
-    |    <%= link_to "Remove Locationless Item From Group", access_group_item_path(@access_group, item), method: :delete,
-                                    data: { confirm: "Are you sure?" } %>
-      <% end %>
+<% provide(:title, "Groups")%>
+<% provide(:header_text, "Items in Access Group: #{@access_group.name}")%>
+
+<% if@current_user.can_crud_item_access?(@access_group)%>
+  <%= button_to "Create New", new_item_path, method: :get, class: "button-new"%>
+  <%= button_to "Add Existing", new_access_group_item_path(@access_group), method: :get, class: "button-add"%>
+<% end %>
+
+<% @items.each do |item| %>
+  <% content_for :indexed_delete_button, flush: true do %>
+    <% if item.locationless?%>
+      <% link_to "Remove locationless item", access_group_item_path(@access_group, item), method: :delete%>
     <% end %>
   <% end %>
-  <h3> With at least one location </h3>
-  <%@items_with_location.each do |item|%>
-    <%= render layout: '/items/items/item', :locals => {:item => item} do %>
-      |  <%= link_to "locations", item_locations_path(item)%>
-    <% end %>
-  <% end %>
-</ul>
+  <%= render partial: 'items/items/indexed_item', :locals => {:item => item}%>
+<% end %>

@@ -1,0 +1,25 @@
+<div class = 'show-template'>
+  <div class = 'show-details-bar'>
+    <div class = 'show-details-flex'>
+      <div class = 'show-image'>
+        <%= yield :show_image%>
+      </div>
+      <div class = 'show-description'>
+        <%= yield :show_description%>
+      </div>
+    </div>
+    <div class = 'show-links'>
+      <ul>
+        <%= yield :show_links%>
+      </ul>
+    </div>
+  </div>
+  <div class = 'show-nav'>
+    <div class = "page-nav">
+      <%= yield :show_nav%>
+    </div>
+  </div>
+  <div class = 'show-body'>
+    <%= yield :show_body %>
+  </div>
+</div>

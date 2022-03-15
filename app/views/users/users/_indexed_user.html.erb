@@ -1,6 +1,18 @@
-  <%= render layout: '/users/users/user', :locals => {:user => user} do %>
-    <% if @current_user.is_sys_admin? && !current_user?(user) %>
-      |  <%= link_to "delete", user, method: :delete,
-                                     data: { confirm: "Are you sure?" } %>
-    <% end %>
-  <% end %>
+<% content_for :card_title, flush: true do %>
+  <%= link_to user.name, user_path(user)%>
+<% end %>
+<% content_for :card_description, flush: true do %>
+  <span class = "description-heading">User Information:</span>
+  <%= user.email%>
+<% end %>
+<% content_for :card_bottom_tray, flush: true do %>
+  <ul>
+    <%# <li><%= link_to "Access Groups", user_access_groups_path(user)</li> %>
+    <li><%= yield :indexed_delete_button%></li>
+  <ul>
+<% end %>
+<% content_for :card_image, flush: true do  %>
+  <%= image_tag user.image if user.image.attached? %>
+<% end %>
+<%= render 'layouts/element_card'%>
+

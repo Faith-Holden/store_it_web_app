@@ -1,12 +1,10 @@
 <% provide(:title, "Items")%>
-<h1>Locations with Item: <%= "#{@item.name}"%></h1>
-<%= link_to "Add to Location", new_item_location_path%>
-<ul>
-  <% @locations.each do |location|%>
-    <%= render layout: '/locations/locations/location', :locals => {:location => location} do %>
-      <%# Add a permission filter based on whether the user is in a group that the locations belongs to, and has edit perms %>
-  |    <%= link_to "Remove From Group", item_location_path(@item, location), method: :delete,
-                                  data: { confirm: "Are you sure?" } %>
-    <% end %>
+<% provide(:header_text, "Locations with Item: #{@item.name}")%>
+<%= button_to "Add to Existing", new_item_location_path(@item), method: :get, class: "button-add"%>
+
+<% @locations.each do |location| %>
+  <% content_for :indexed_delete_button, flush: true do %>
+    <% link_to "Remove", item_location_path(@item, location), method: :delete%>
   <% end %>
-</ul>
+  <%= render partial: 'locations/locations/indexed_location', :locals => {:location => location}%>
+<% end %>

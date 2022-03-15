@@ -1,8 +1,13 @@
-<%provide(:title, "Items")%>
-<h1>Items</h1>
-<%= link_to "New Item", new_item_path%>
-<ul class="items">
-  <% @items.each do |item|%>
-    <%= render :partial => "/items/items/indexed_item",:locals => {:item => item} %>
-  <% end%>
-</ul>
+<% provide(:title, "Items")%>
+<% provide(:header_text, "My Items")%>
+
+<% if@current_user.can_crud_items?%>
+  <%= button_to "New", new_item_path, method: :get, class: "button-new"%>
+<% end %>
+
+<% @items.each do |item| %>
+  <% content_for :indexed_delete_button, flush: true do %>
+    <% link_to "Delete", item_path(item), method: :delete%>
+  <% end %>
+  <%= render partial: 'indexed_item', :locals => {:item => item}%>
+<% end %>

@@ -5,8 +5,7 @@ class AccessGroups::ItemsController < ApplicationController
   def index
     @access_group = AccessGroup.find(params[:access_group_id])
     if @current_user.is_sys_admin? || @current_user.can_see_items_in_group?(@access_group)
-      @locationless_items = @access_group.items.where(id: ItemLocation.locationless.pluck(:item_id))
-      @items_with_location = @access_group.items.where(id: ItemLocation.with_location.pluck(:item_id))
+      @items = @access_group.items
     end
   end
   
