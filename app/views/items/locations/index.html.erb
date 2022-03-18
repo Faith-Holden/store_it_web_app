@@ -1,5 +1,8 @@
 <% provide(:title, "Items")%>
-<% provide(:header_text, "Locations with Item: #{@item.name}")%>
+<%= content_for :header_text, flush: true do %>
+  Locations with Item: 
+  <%= link_to @item.name, @item%>
+<% end %>
 <%= button_to "Add to Existing", new_item_location_path(@item), method: :get, class: "button-add"%>
 
 <% @locations.each do |location| %>

@@ -12,13 +12,8 @@ class Locations::SublocationsController < ApplicationController
 
   def create
     @location = Location.find(params[:location_id])
-    @sublocation = Location.new(sublocation_params)
-
-    if @sublocation.save
-      redirect_to location_sublocations_path(@location)
-    else
-      redirect_to new_location_sublocation_path(@location)
-    end
+    @location.sublocations << Location.find_by(id: params[:sublocation_id])
+    redirect_to @location
   end
 
   
@@ -30,12 +25,6 @@ class Locations::SublocationsController < ApplicationController
   end
 
   private
-    def sublocation_params
-      sub_params = Hash.new
-      sub_params = {parent_id: params[:parent_id], description: params[:description], name: params[:name]}
-      return sub_params
-    end
-
     def require_user_can_crud
       unless @current_user.can_crud_non_root_location?
         flash[:danger]= "You do not have permission to change which items are in this location!"

@@ -1,0 +1,29 @@
+
+<div class = form-custom>
+  <%= form_with(model: @location, local: true) do |f|%>
+    <div class = 'form-div'>
+      <%= f.text_field :name, class: 'form_control', placeholder: "Name of location"%>
+    </div>
+
+    <div class = 'form-div'>
+      <%= f.text_field :description, class: 'form_control', placeholder: "Description of location"%>
+    </div>
+
+    <div class = 'form-div'>
+      <% if @current_user.can_crud_root_location?%>
+        <%= f.collection_select :parent_id, @parent_locations,:id,:name, {  include_blank: true, prompt: 'Select a parent location'}%>
+      <% else %>
+        <%= f.collection_select :parent_id,@parent_locations,:id,:name, {prompt: 'Select a parent location'} %>
+      <% end %>
+    </div>
+
+    <div class = 'form-div'>
+      <label>Attach an image</label>
+      <div class= 'form-div-img'>
+        <%= f.file_field :image, accept: "image/jpeg,image/gif,image/png" %>
+      </div>
+    </div>
+
+    <%= f.submit "Submit", class: "btn btn-primary"%>
+  <% end%>
+</div>

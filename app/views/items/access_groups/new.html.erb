@@ -1,9 +1,14 @@
-<%= provide(:title, "Item")%>
-<h1>Add to Access Group</h1>
+<%= provide(:title, "Items")%>
+<%= content_for :header_text, flush: true do %>
+  Add Item to AccessGroup
+<% end %>
 
-<%= form_with(url: "/items/#{@item.id}/access_groups", local: true) do |f|%>
-  <%= f.label :access_group_id%>
-  <%= f.collection_select :access_group_id, @current_user.groups_user_can_crud_item_access,:id,:name %>
+<div class = form-custom>
+  <%= form_with(url: "/items/#{@item.id}/access_groups", local: true) do |f|%>
+    <div class = 'form-div'>
+      <%= f.collection_select :access_group_id, @current_user.groups_user_can_crud_item_access,:id,:name,{prompt: 'Select a group'}%>
+    </div>
 
-  <%= f.submit "Submit", class: "btn btn-primary"%>
-<% end%>
+    <%= f.submit "Submit", class: "btn btn-primary"%>
+  <% end%>
+</div>

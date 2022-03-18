@@ -1,9 +1,7 @@
 <% provide(:title, "About")%>
-<div>
-  <div class = "page-header-text">
-    About
-  </div>
-  <div>
-    *Information to go here.
-  </div>
+<%= content_for :header_text, flush: true do %>
+  About
+<% end %>
+<div class = 'static-body'>
+  *Information to go here.
 </div>

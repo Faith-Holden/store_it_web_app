@@ -1,6 +1,8 @@
 <% provide(:title, "Locations")%>
-<% provide(:header_text, "Groups with location: #{@location.name}")%>
-
+<%= content_for :header_text, flush: true do %>
+  Access Groups with Location: 
+  <%= link_to @location.name, @location%>
+<% end %>
 <%= button_to "Add to Group", new_location_access_group_path(@location), method: :get, class: "button-new"%>
 
 <% @access_groups.each do |access_group| %>

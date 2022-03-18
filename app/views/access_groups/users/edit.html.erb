@@ -1,0 +1,13 @@
+<%= content_for :header_text, flush: true do %>
+  Edit <%= @user.name%>'s access for  <%=@access_group.name%>
+<% end %>
+
+<div class = form-custom>
+  <%= form_with(url: "/access_groups/#{@access_group.id}/users/#{@user.id}", local: true, method: :patch) do |f|%>
+    <%= hidden_field_tag :user, @user %>
+    <div class = 'form-div'>
+      <%= select_tag "access_level", options_for_select(["Group Admin", "Default"]) %>
+    </div>
+    <%= f.submit "Submit", class: "btn btn-primary"%>
+  <% end%>
+</div>

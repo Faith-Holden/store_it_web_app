@@ -1,11 +1,13 @@
-<%= provide(:title, "Subgroup")%>
-<h1>Add Subgroup</h1>
+<%= content_for :header_text, flush: true do %>
+  Add a Subgroup to Access Group:
+  <%=@access_group.name%>
+<% end %>
 
-<%= form_with(url: "/locations/#{@access_group.id}/subgroups", local: true) do |f|%>
-  <%= f.label :name %>
-  <%= f.text_field :name, class: 'form_control'%>
-
-  <%= hidden_field_tag 'parent_id', @access_group.id %>
-
-  <%= f.submit "Submit", class: "btn btn-primary"%>
-<% end%>
+<div class = form-custom>
+  <%= form_with(url: "/access_groups/#{@access_group.id}/subgroups", local: true) do |f|%>
+    <div class = 'form-div'>
+      <%= f.collection_select :subgroup_id, @current_user.access_groups,:id,:name, {prompt: 'Select a subgroup to add'}%>
+    </div>
+    <%= f.submit "Submit", class: "btn btn-primary"%>
+  <% end%>
+</div>

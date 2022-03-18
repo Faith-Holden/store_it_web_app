@@ -1,0 +1,21 @@
+
+<div class = form-custom>
+  <%= form_with(model: @item, local: true) do |f|%>
+    <div class = 'form-div'>
+      <%= f.text_field :name, class: 'form_control', placeholder: "Name of item", value: @item.name%>
+    </div>
+
+    <div class = 'form-div'>
+      <%= f.text_field :description, class: 'form_control', placeholder: "Description of item", value: @item.description%>
+    </div>
+
+    <div class = 'form-div'>
+      <label>Attach an image</label>
+      <div class= 'form-div-img'>
+        <%= f.file_field :image, accept: "image/jpeg,image/gif,image/png" %>
+      </div>
+    </div>
+
+    <%= f.submit "Submit", class: "btn btn-primary"%>
+  <% end%>
+</div>

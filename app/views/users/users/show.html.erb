@@ -1,12 +1,25 @@
-<% provide(:title, @user.name)%>
-<div class= "jumbotron jumbotron-fluid">
-  <div>
-    <%= @user.name %>
-  </div>
-  <div>
-    <%= @user.email%>
-  </div>
-  <div>
-    <%= link_to "Edit", edit_user_path%>
-  </div>
-</div>
+<% provide(:title, "Users")%>
+
+<%= content_for :header_text, flush: true do %>
+  <%= @user.name%>
+  <a id = "top"></a>
+<% end %>
+
+
+<% content_for :show_image, flush: true do %>
+   <%= image_tag @user.image if @user.image.attached? %>
+<% end %>
+
+<% content_for :show_description, flush: true do %>
+  <span class = "description-heading">User Email:</span>
+  <%= @user.email%>
+<% end %>
+
+<% content_for :show_links, flush: true do %>
+  <% if @current_user.is_sys_admin? || current_user==@user%>
+    <li><%= link_to "Delete Profile", user_path(@user), method: :delete%></li>
+    <li><%= link_to "Edit Profile", edit_user_path(@user)%></li>
+  <% end %>
+<% end %>
+
+<%= render partial: 'layouts/show_template'%>

@@ -1,5 +1,8 @@
 <% provide(:title, "Items")%>
-<% provide(:header_text, "Items in Location: #{@location.name}")%>
+<%= content_for :header_text, flush: true do %>
+  Items in Location: 
+  <%= link_to @location.name, @location%>
+<% end %>
 
 <% if@current_user.can_crud_items?%>
   <%= button_to "Create New", new_item_path, method: :get, class: "button-new"%>

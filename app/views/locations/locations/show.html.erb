@@ -1,36 +1,125 @@
-<% provide(:title, @location.name)%>
-<div class= "jumbotron jumbotron-fluid">
-  <%= @location.name %>
-</div>
+<% provide(:title, "Location")%>
+<%= content_for :header_text, flush: true do %>
+  <%= @location.name%>
+  <a id = "top"></a>
+<% end %>
 
-<div class= "jumbotron jumbotron-fluid">
-  <div>
-    Parent location:
-  </div>
-  <% unless @location.parent.nil?%>
-    <%= link_to @location.parent.name, @location.parent%>
+<% content_for :show_image, flush: true do %>
+   <%= image_tag @location.image if @location.image.attached? %>
+<% end %>
+
+<% content_for :show_description, flush: true do %>
+  <span class = "description-heading">Description:</span>
+  <a id = "top"></a>
+  <%= @location.description%>
+<% end %>
+
+<% content_for :show_links, flush: true do %>
+  <% unless @location.parent_id.nil?%>
+    <li><%= link_to "Parent Location", location_path(@location.parent)%>
   <% end %>
-</div>
+  <li><%= link_to "Delete Location", location_path, method: :delete%></li>
+  <li><%= link_to "Edit Location", edit_location_path(@location)%></li>
+<% end %>
 
-<div class= "jumbotron jumbotron-fluid">
-  <%= link_to "Edit Location", edit_location_path%>
-</div>
+<% content_for :show_nav, flush: true do%>
+  <ul class = 'page-nav-menu'>
+    <li><a href= "#top">Top</a></li>
+    <li><a href= "#items">Items</a></li>
+    <li><a href= "#sublocations">SubLocations</a></li>
+    <li><a href= "#access_groups">Access Groups</a></li>
+  </ul>
+<% end %>
 
-<div class= "jumbotron jumbotron-fluid">
-  <div>
-    Description:
+<% content_for :show_body, flush: true do %>
+  <div class = "show-category">
+    <div class= "category-header">
+      <span class= 'category-title'>
+        <%= link_to "Items in this Location:", location_items_path(@location)%>  
+      </span>
+      <span class= 'new-link'>
+        <%= link_to "Add an Item", new_location_item_path(@location)%>
+      </span>
+      <a id = "items"></a>
+    </div>
+    <% @location.items.each do |item|%>
+      <div class= 'show-element'>
+        <div class = 'link-to-element'>
+          <%= link_to " ", item%>
+        </div>
+        <div class = 'show-element-flex'>
+          <span class = 'element-title'>
+            <%= item.name%>
+          </span>
+          <span class = 'element-image'>
+            <%= image_tag item.image if item.image.attached? %>
+          </span>
+        </div>
+          <span class = 'element-links'>
+            <%= link_to "Remove", location_item_path(@location, item), method: :delete %>
+          </span>
+      </div>
+    <% end %>
   </div>
-  <%=@location.description %>
-</div>
 
-<div class= "jumbotron jumbotron-fluid">
-  <%=link_to "Sub-Locations", location_sublocations_path(@location) %>
-</div>
+  <div class = "show-category">
+    <div class= "category-header">
+      <span class= 'category-title'>
+        <%= link_to "Access Groups with this Location:", location_access_groups_path(@location)%>  
+      </span>
+      <span class= 'new-link'>
+        <%= link_to "Add a Group", new_location_access_group_path(@location)%>
+      </span>
+      <a id = "access_groups"></a>
+    </div>
+    <% @location.access_groups.each do |access_group|%>
+      <div class= 'show-element'>
+        <div class = 'link-to-element'>
+          <%= link_to " ", access_group%>
+        </div>
+        <div class = 'show-element-flex'>
+          <span class = 'element-title'>
+            <%= access_group.name%>
+          </span>
+        </div>
+        <span class = 'element-links'>
+          <%= link_to "Remove", location_access_group_path(@location, access_group), method: :delete %>
+        </span>
+      </div>
+    <% end %>
+  </div>
 
-<div class= "jumbotron jumbotron-fluid">
-  <%=link_to "Items", location_items_path(@location) %>
-</div>
+  <div class = "show-category">
+    <div class= "category-header">
+      <span class= 'category-title'>
+        <%= link_to "Sublocations of this Location:", location_sublocations_path(@location)%>  
+      </span>
+      <span class= 'new-link'>
+        <%= link_to "Add a Sublocation",new_location_sublocation_path(@location)%>
+      </span>
+      <a id = "sublocations"></a>
+    </div>
+    <% @location.sublocations.each do |sublocation|%>
+      <% if sublocation.is_visible?(@current_user)%>
+        <div class= 'show-element'>
+          <div class = 'link-to-element'>
+            <%= link_to " ", sublocation%>
+          </div>
+          <div class = 'show-element-flex'>
+            <span class = 'element-title'>
+              <%= sublocation.name%>
+            </span>
+            <span class = 'element-image'>
+              <%= image_tag sublocation.image if sublocation.image.attached? %>
+            </span>
+          </div>
+            <span class = 'element-links'>
+              <%= link_to "Remove", location_sublocation_path(@location, sublocation), method: :delete %>
+            </span>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
 
-<div class= "jumbotron jumbotron-fluid">
-  <%=link_to "Access Groups", location_access_groups_path(@location) %>
-</div>
+<%= render partial: 'layouts/show_template'%>

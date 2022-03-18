@@ -1,9 +1,7 @@
 <% provide(:title, "Help")%>
-<div>
-  <div class = "page-header-text">
-    Help
-  </div>
-  <div>
-    *Help info to go here.
-  </div>
+<%= content_for :header_text, flush: true do %>
+  Help
+<% end %>
+<div class = 'static-body'>
+  *Help info to go here.
 </div>

@@ -1,13 +1,17 @@
 <% provide(:title, "AccessGroup")%>
-<h1>Subgroups: <%= "#{@access_group.name}"%></h1>
-<%= link_to "Add a subgroup", new_access_group_subgroup_path(@access_group) %>
-<ul>
-  <% @subgroups.each do |subgroup|%>
-    <%= render layout: '/access_groups/access_groups/access_group', :locals => {:access_group => subgroup} do %>
-      <% if @current_user.can_crud_subgroup?(@access_group)%>
-        |    <%= link_to "Remove Subgroup", access_group_subgroup_path(@access_group, subgroup), method: :delete,
-                                        data: { confirm: "Are you sure?" } %>
-      <% end %>
+<%= content_for :header_text, flush: true do %>
+  Subgroups of Access Group: 
+  <%= link_to @access_group.name, @access_group%>
+<% end %>
+
+<%= button_to "Add Subgroup", new_access_group_subgroup_path(@access_group), method: :get, class: "button-new"%>
+
+<% @subgroups.each do |subgroup| %>
+  <% content_for :indexed_delete_button, flush: true do %>
+    <% if @current_user.can_crud_subgroup?(@access_group)%>
+      <% link_to "Remove Subgroup from Group", access_group_subgroup_path(@access_group, subgroup), method: :delete,
+                                                data: {confirm: "Are you sure?"} %>
     <% end %>
   <% end %>
-</ul>
+  <%= render partial: 'access_groups/access_groups/indexed_access_group', :locals => {:access_group => subgroup}%>
+<% end %>

@@ -1,9 +1,14 @@
 <%= provide(:title, "Location")%>
-<h1>Add this Location to an Access Group</h1>
+<%= content_for :header_text, flush: true do %>
+  Add Location to an AccessGroup
+<% end %>
 
-<%= form_with(url: "/locations/#{@location.id}/access_groups", local: true) do |f|%>
-  <%= f.label :access_group_id%>
-  <%= f.collection_select :access_group_id, @current_user.access_groups,:id,:name %>
+<div class = form-custom>
+  <%= form_with(url: "/locations/#{@location.id}/access_groups", local: true) do |f|%>
+    <div class = 'form-div'>
+      <%= f.collection_select :access_group_id, @current_user.access_groups,:id,:name,{prompt: 'Select a group'}%>
+    </div>
 
-  <%= f.submit "Submit", class: "btn btn-primary"%>
-<% end%>
+    <%= f.submit "Submit", class: "btn btn-primary"%>
+  <% end%>
+</div>

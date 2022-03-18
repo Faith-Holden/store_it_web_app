@@ -86,6 +86,10 @@ class User < ApplicationRecord
     AccessGroup.where(id: user_accesses)
   end
 
+  def user_access_level_name(access_group_id)
+    user_access_permission = UserAccess.has_user(self)&.find_by(access_group_id: access_group_id)
+    test = UserAccess.get_permission_name(UserAccess.get_permission_type(user_access_permission))
+  end
   
   # -------------------------------------------------------------
 

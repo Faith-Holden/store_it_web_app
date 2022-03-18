@@ -1,0 +1,23 @@
+<div class = form-custom>
+  <%= form_with(model: @access_group, local: true) do |f|%>
+    <div class = 'form-div'>
+      <%= f.text_field :name, class: 'form_control',  placeholder: "Name of group", value: @access_group.name %>
+    </div>
+
+    <div class = 'form-div'>
+      <%= f.text_field :description, class: 'form_control',  placeholder: "Description of group", value: @access_group.description%>
+    </div>
+
+    <div class = 'form-div'>
+      Parent:
+      <% if @current_user.can_crud_root_group?%>
+        <%= f.collection_select :parent_id, @access_groups,:id,:name,  {  include_blank: true, prompt: 'Select a parent group'}%>
+      <% else %>
+        <%= f.collection_select :parent_id,@access_groups,:id,:name, prompt: 'Select a parent group'%>
+      <% end %>
+    </div>
+
+    <%= f.submit "Submit", class: "btn btn-primary"%>
+  <% end%>
+</div>
+

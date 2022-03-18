@@ -1,9 +1,14 @@
-<%= provide(:title, "Item")%>
-<h1>Add to Location</h1>
+<%= provide(:title, "Items")%>
+<%= content_for :header_text, flush: true do %>
+  Add Item to Location
+<% end %>
 
-<%= form_with(url: "/items/#{@item.id}/locations", local: true) do |f|%>
-  <%= f.label :location_id%>
-  <%= f.collection_select :location_id, @current_user.locations_with_visible_items,:id,:name %>
+<div class = form-custom>
+  <%= form_with(url: "/items/#{@item.id}/locations", local: true) do |f|%>
+    <div class = 'form-div'>
+      <%=f.collection_select :location_id, @current_user.locations_with_visible_items,:id,:name,{prompt: 'Select a location'}%>
+    </div>
 
-  <%= f.submit "Submit", class: "btn btn-primary"%>
-<% end%>
+    <%= f.submit "Submit", class: "btn btn-primary"%>
+  <% end%>
+</div>

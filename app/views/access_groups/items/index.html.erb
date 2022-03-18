@@ -1,5 +1,8 @@
 <% provide(:title, "Groups")%>
-<% provide(:header_text, "Items in Access Group: #{@access_group.name}")%>
+<%= content_for :header_text, flush: true do %>
+  Items in Access Group: 
+  <%= link_to @access_group.name, @access_group%>
+<% end %>
 
 <% if@current_user.can_crud_item_access?(@access_group)%>
   <%= button_to "Create New", new_item_path, method: :get, class: "button-new"%>

@@ -1,5 +1,5 @@
 class AccessGroups::UsersController < ApplicationController
-  before_action :require_user_can_crud_user_access, only: [:destroy, :create, :new]
+  before_action :require_user_can_crud_user_access, only: [:destroy, :create, :new, :edit, :update]
   
   def index
     @access_group = AccessGroup.find(params[:access_group_id])
@@ -22,12 +22,22 @@ class AccessGroups::UsersController < ApplicationController
     redirect_to access_group_users_path(@access_group)
   end
 
+  def edit
+    @user = User.find(params[:id])
+    @access_group = AccessGroup.find(params[:access_group_id])
+  end
+
+  def update
+    @access_group = AccessGroup.find(params[:access_group_id])
+    user = User.find_by(id: params[:id])
+    if @current_user.is_group_admin?(@access_group) || @current_user.is_sys_admin?
+      user.set_user_access_permissions(@access_group, UserAccess.get_permission_level(params[:access_level]))
+    end
+
+    redirect_to @access_group
+  end
+
   def destroy
-    # unless @current_user.can_crud_user_access?(AccessGroup.find(params[:access_group_id]))
-    #   flash[:danger]= "You do not have permission to remove users from this group!"
-    #   redirect_to root_url
-    #   return
-    # end
     access_group = AccessGroup.find_by(id: params[:access_group_id])
     user = User.find_by(id: params[:id])
     access_group.remove_user(user)

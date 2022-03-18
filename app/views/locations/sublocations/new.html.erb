@@ -1,11 +1,13 @@
 <%= provide(:title, "Location")%>
-<h1>Add Sublocation</h1>
+<%= content_for :header_text, flush: true do %>
+  Add a Sublocation to this Location
+<% end %>
 
-<%= form_with(url: "/locations/#{@location.id}/sublocations", local: true) do |f|%>
-  <%= f.label :name %>
-  <%= f.text_field :name, class: 'form_control'%>
-
-  <%= hidden_field_tag 'parent_id', @location.id %>
-
-  <%= f.submit "Submit", class: "btn btn-primary"%>
-<% end%>
+<div class = form-custom>
+  <%= form_with(url: "/locations/#{@location.id}/sublocations", local: true) do |f|%>
+    <div class = 'form-div'>
+      <%= f.collection_select :sublocation_id, @current_user.locations,:id,:name,{prompt: 'Select a sublocation'}%>
+    </div>
+    <%= f.submit "Submit", class: "btn btn-primary"%>
+  <% end%>
+</div>

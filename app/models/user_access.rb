@@ -13,6 +13,7 @@ class UserAccess < ApplicationRecord
                       can_crud_subgroups: false, can_crud_location_access: false,
                       can_crud_item_access: false}
 
+  ACCESS_LEVEL_NAMES = ["Group Admin","Default"]
 
   belongs_to :user
   belongs_to :access_group
@@ -35,6 +36,41 @@ class UserAccess < ApplicationRecord
   end
 
   class << self
+    def get_permission_level(permission)
+      if permission == "Group Admin"
+        return GROUP_ADMIN_PERMS
+      elsif permission== "Default"
+        return DEFAULT_PERMS
+      else
+        return nil
+      end
+    end
+
+    def get_permission_name(permission)
+      if permission == GROUP_ADMIN_PERMS
+        "Group Admin"
+      elsif permission == DEFAULT_PERMS
+        "Default"
+      else
+        nil
+      end
+    end
+
+    def get_permission_type(permission_record)
+      permission_hash = {group_admin: permission_record.group_admin, can_see_group: permission_record.can_see_group,
+        can_see_items: permission_record.can_see_items,can_see_locations: permission_record.can_see_locations, 
+        can_crud_group: permission_record.can_crud_group, can_crud_user_access: permission_record.can_crud_user_access,
+        can_crud_subgroups: permission_record.can_crud_subgroups, can_crud_location_access: permission_record.can_crud_location_access,
+        can_crud_item_access: permission_record.can_crud_item_access}
+      if permission_hash == GROUP_ADMIN_PERMS
+        GROUP_ADMIN_PERMS
+      elsif permission_hash == DEFAULT_PERMS
+        DEFAULT_PERMS
+      else
+        nil
+      end
+    end
+
     def group_with_user(access_group, user)
       user_access_group = where(user_id: user.id)
       return nil if user_access_group.empty?

@@ -1,22 +1,90 @@
-<% provide(:title, @item.name)%>
-<span class= "items">
-  <div class= "jumbotron jumbotron-fluid">
-    <%= @item.name %>
-  </div>
-  <%= image_tag @item.image if @item.image.attached? %>
+<% provide(:title, "Item")%>
+<%= content_for :header_text, flush: true do %>
+  <%= @item.name%>
+  <a id = "top"></a>
+<% end %>
 
-  <div class= "jumbotron jumbotron-fluid">
-    <%=link_to "Edit item", edit_item_path %>
-  </div>
+<% content_for :show_image, flush: true do %>
+   <%= image_tag @item.image if @item.image.attached? %>
+<% end %>
 
-  <div class= "jumbotron jumbotron-fluid">
-    <div>
-    Description:
+<% content_for :show_description, flush: true do %>
+  <span class = "description-heading">Description:</span>
+  <%= @item.description%>
+<% end %>
+
+<% content_for :show_links, flush: true do %>
+  <li><%= link_to "Edit Item", edit_item_path(@item)%></li>
+  <li><%= link_to "Delete Item", item_path, method: :delete%></li>
+<% end %>
+
+<% content_for :show_nav, flush: true do%>
+  <ul class = 'page-nav-menu'>
+    <li><a href= "#top">Top</a></li>
+    <li><a href= "#locations">Locations</a></li>
+    <li><a href= "#access_groups">Access Groups</a></li>
+  </ul>
+<% end %>
+
+<% content_for :show_body, flush: true do %>
+  <a id = "top"></a>
+  <div class = "show-category">
+
+    <div class= "category-header">
+      <span class= 'category-title'>
+        <%= link_to "Locations with this Item:", item_locations_path(@item)%>  
+      </span>
+      <span class= 'new-link'>
+        <%= link_to "Add to Location", new_item_location_path(@item)%>
+      </span>
+      <a id = "locations"></a>
     </div>
-    <%= @item.description %>
+    <% @item.locations.each do |location|%>
+      <div class= 'show-element'>
+       <div class = 'link-to-element'>
+          <%= link_to " ", location%>
+        </div>
+        <div class = 'show-element-flex'>
+          <span class = 'element-title'>
+            <%= location.name%>
+          </span>
+          <span class = 'element-image'>
+            <%= image_tag location.image if location.image.attached? %>
+          </span>
+        </div>
+          <span class = 'element-links'>
+            <%= link_to "Remove", item_location_path(@item, location), method: :delete %>
+          </span>
+      </div>
+    <% end %>
   </div>
 
-  <div class= "jumbotron jumbotron-fluid">
-    <%=link_to "Locations", item_locations_path(@item) %>
+  <div class = "show-category">
+    <div class= "category-header">
+      <span class= 'category-title'>
+        <%= link_to "Access Groups with this Item", item_access_group_path(@item)%>  
+      </span>
+      <span class= 'new-link'>
+        <%= link_to "Add to Group", new_item_access_group_path(@item)%>
+      </span>
+      <a id = "access_groups"></a>
+    </div>
+    <% @item.access_groups.each do |access_group|%>
+      <div class= 'show-element'>
+        <div class = 'link-to-element'>
+          <%= link_to " ", access_group%>
+        </div>
+        <div class = 'show-element-flex'>
+          <span class = 'element-title'>
+            <%= access_group.name%>
+          </span>
+        </div>
+        <span class = 'element-links'>
+          <%= link_to "Remove", item_access_group_path(@item, access_group), method: :delete %>
+        </span>
+      </div>
+    <% end %>
   </div>
-</span>
+<% end %>
+
+<%= render partial: 'layouts/show_template'%>

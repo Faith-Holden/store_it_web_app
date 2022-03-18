@@ -1,22 +1,5 @@
 <%= provide(:title, "Item")%>
-<h1>Edit Item</h1>
-
-
-<%= form_with(model: @item, local: true) do |f|%>
-  <div>
-    <%= f.label :name %>
-    <%= f.text_field :name, class: 'form_control',  value: @item.name%>
-  </div>
-  <div>
-    <%= f.label :description %>
-    <%= f.text_field :description, class: 'form_control',  value: @item.description%>
-  </div>
-  <span class="image">
-    <%= f.label :image%>
-    <%= f.file_field :image, accept: "image/jpeg,image/gif,image/png",  value: @item.image %>
-  </span>
-  <div>
-    <%= f.submit "Submit", class: "btn btn-primary"%>
-  </div>
-<% end%>
-
+<%= content_for :header_text, flush: true do %>
+  Edit Item
+<% end %>
+<%= render 'item_form'%>

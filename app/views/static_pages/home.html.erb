@@ -1,10 +1,10 @@
-<% provide(:header_text, "Welcome to the StoreIt Web App!")%>
-
-<div>
-  <div>
-    To begin,  <a href="/users/new"> create an account</a> or <a href="/login"> log in</a>.
-  </div>
+<%= content_for :header_text, flush: true do %>
+  Welcome to StoreIt!
+<% end %>
+<div class = 'static-body'>
+  <% if logged_in?%>
+      Home Page
+    <% else %>
+      To begin,  <a href="/users/new"> create an account</a> or <a href="/login"> log in</a>.
+    <% end %>
 </div>
-
-
-

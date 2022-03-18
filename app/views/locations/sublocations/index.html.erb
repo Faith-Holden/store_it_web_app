@@ -1,13 +1,21 @@
 <% provide(:title, "Sublocations")%>
-<h1>Sublocations: <%= "#{@location.name}"%></h1>
-<%= link_to "Add a Sublocation", new_location_sublocation_path(@location) %>
-<ul>
-  <% @sublocations.each do |sublocation|%>
-    <%= render layout: '/locations/locations/location', :locals => {:location => sublocation} do %>
-      <% if @current_user.can_crud_non_root_location?%>
-        |    <%= link_to "Remove Sublocation", location_sublocation_path(@location, sublocation), method: :delete,
-                                        data: { confirm: "Are you sure?" } %>
-      <% end %>
+<%= content_for :header_text, flush: true do %>
+  Sublocations in Location: 
+  <%= link_to @location.name, @location%>
+<% end %>
+
+  <% if current_user.can_crud_non_root_location?%>
+    <%= button_to "Add Existing Location", new_location_sublocation_path(@location), method: :get, class: "button-add"%>
+  <% end %>
+  <% if @current_user.can_crud_root_location?%>
+    <%= button_to "Create a new Location", new_location_path, method: :get, class: "button-new"%>
+  <% end %>
+
+<% @sublocations.each do |sublocation| %>
+  <% content_for :indexed_delete_button, flush: true do %>
+    <% if current_user.can_crud_non_root_location?%>
+      <% link_to "Remove", location_sublocation_path(@location, sublocation), method: :delete%>
     <% end %>
   <% end %>
-</ul>
+  <%= render partial: 'locations/locations/indexed_location', :locals => {:location => sublocation}%>
+<% end %>

@@ -3,12 +3,12 @@
 <% end %>
 <% content_for :card_description, flush: true do %>
   <span class = "description-heading">User Information:</span>
-  <%= user.email%>
+  <%= yield :user_information%>
 <% end %>
 <% content_for :card_bottom_tray, flush: true do %>
   <ul>
-    <%# <li><%= link_to "Access Groups", user_access_groups_path(user)</li> %>
     <li><%= yield :indexed_delete_button%></li>
+    <li><%= yield :indexed_edit_user_button%></li>
   <ul>
 <% end %>
 <% content_for :card_image, flush: true do  %>

@@ -1,5 +1,8 @@
 <% provide(:title, "Groups")%>
-<% provide(:header_text, "Locations in Access Group: #{@access_group.name}")%>
+<%= content_for :header_text, flush: true do %>
+  Locations in Access Group: 
+  <%= link_to @access_group.name, @access_group%>
+<% end %>
 
 <% if@current_user.can_crud_non_root_location?%>
   <%= button_to "Create New", new_location_path, method: :get, class: "button-new"%>

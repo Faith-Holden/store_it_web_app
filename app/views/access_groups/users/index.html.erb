@@ -1,13 +1,27 @@
-<% provide(:title, "Users")%>
-<h1>Users in Access Group: <%= "#{@access_group.name}"%></h1>
-<%= link_to "Add a User", new_access_group_user_path%>
-<ul>
-  <% @users.each do |user|%>
-    <%= render layout: '/users/users/user', :locals => {:user => user} do %>
-      <% if @current_user.can_see_locations_in_group?(@access_group) && !current_user?(user)%>
-        |    <%= link_to "Remove From Group", access_group_user_path(@access_group, user), method: :delete,
-                                        data: { confirm: "Are you sure?" } %>
-      <% end %>
+<% provide(:title, "AccessGroup")%>
+<%= content_for :header_text, flush: true do %>
+  Users in Access Group: 
+  <%= link_to @access_group.name, @access_group%>
+<% end %>
+
+<% if @current_user.can_crud_user_access?(@access_group)%>
+  <%= button_to "Add User", new_access_group_user_path(@access_group), method: :get, class: "button-new"%>
+<% end %>
+
+<% @users.each do |user| %>
+  <%= content_for :indexed_edit_user_button, flush: true do %>
+    <% if @current_user.can_crud_user_access?(@access_group)%>
+      <% link_to "Change User Access", edit_access_group_user_path(@access_group, user)%>
     <% end %>
   <% end %>
-</ul>
+  <% content_for :indexed_delete_button, flush: true do %>
+    <% if @current_user.can_crud_user_access?(@access_group)%>
+      <% link_to "Remove User from Group", access_group_user_path(@access_group, user), method: :delete,
+                                                data: {confirm: "Are you sure?"} %>
+    <% end %>
+  <% end %>
+    <% content_for :user_information, flush: true do %>
+    <%= user.user_access_level_name(@access_group)%>
+  <% end %>
+  <%= render partial: 'users/users/indexed_user', :locals => {:user => user}%>
+<% end %>

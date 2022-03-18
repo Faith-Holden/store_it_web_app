@@ -1,47 +1,155 @@
 <% provide(:title, "Access Group")%>
-<% provide(:header_text, "Access Group: #{@access_group.name}")%>
+<%= content_for :header_text, flush: true do %>
+  <%= @access_group.name%>
+  <a id = "top"></a>
+<% end %>
+
+
 <% content_for :show_image, flush: true do %>
 <% end %>
+
 <% content_for :show_description, flush: true do %>
   <span class = "description-heading">Description:</span>
   <%= @access_group.description%>
 <% end %>
+
 <% content_for :show_links, flush: true do %>
+  <% unless @access_group.parent_id.nil?%>
+    <li><%= link_to "Parent Group", access_groups_path(@access_group.parent)%></li>
+  <% end %>
   <li><%= link_to "Edit Group", edit_access_group_path(@access_group)%></li>
   <li><%= link_to "Delete Group", access_group_path, method: :delete%></li>
 <% end %>
 
 <% content_for :show_nav, flush: true do%>
-  <a href= "#page-nav-subgroups">Subgroups</a>
-  <a href= "#page-nav-locations">Locations</a>
-  <a href= "#page-nav-items">Items</a>
+  <ul class = 'page-nav-menu'>
+    <li><a href= "#top">Top</a></li>
+    <li><a href= "#subgroups">Subgroups</a></li>
+    <li><a href= "#locations">Locations</a></li>
+    <li><a href= "#items">Items</a></li>
+    <li><a href= "#users">Users</a></li>
+  </ul>
 <% end %>
 
 <% content_for :show_body, flush: true do %>
   <div class = "show-category">
-    <a id= "page-nav-subgroups">
-    Subgroups
+    <div class= "category-header">
+      <span class= 'category-title'>
+        <%= link_to "Subgroups of this Access Group:", access_group_subgroups_path(@access_group)%>  
+      </span>
+      <span class= 'new-link'>
+        <%= link_to "Add a Subgroup",new_access_group_subgroup_path(@access_group)%>
+      </span>
+      <a id = "subgroups"></a>
+    </div>
     <% @access_group.subgroups.each do |subgroup|%>
-      <div class= 'show-instance'>
-        <%= subgroup.name%>
+      <div class= 'show-element'>
+       <div class = 'link-to-element'>
+          <%= link_to " ", subgroup%>
+        </div>
+        <div class = 'show-element-flex'>
+          <span class = 'element-title'>
+            <%= subgroup.name%>
+          </span>
+        </div>
+          <span class = 'element-links'>
+            <%= link_to "Remove", access_group_subgroup_path(@access_group, subgroup), method: :delete %>
+          </span>
       </div>
     <% end %>
   </div>
+
   <div class = "show-category">
-    <a id= "page-nav-locations">
-    locations
+    <div class= "category-header">
+      <span class= 'category-title'>
+        <%= link_to "Locations in this Access Group:", access_group_locations_path(@access_group)%>  
+      </span>
+      <span class= 'new-link'>
+        <%= link_to "Add a Location", new_access_group_location_path(@access_group)%>
+      </span>
+      <a id = "locations"></a>
+    </div>
     <% @access_group.locations.each do |location|%>
-      <div class= 'show-instance'>
-        <%= location.name%>
+      <div class= 'show-element'>
+        <div class = 'link-to-element'>
+          <%= link_to " ", location%>
+        </div>
+        <div class = 'show-element-flex'>
+          <span class = 'element-title'>
+            <%= location.name%>
+          </span>
+          <span class = 'element-image'>
+            <%= image_tag location.image if location.image.attached? %>
+          </span>
+        </div>
+        <span class = 'element-links'>
+          <%= link_to "Remove", access_group_location_path(@access_group, location), method: :delete %>
+        </span>
       </div>
     <% end %>
   </div>
+
   <div class = "show-category">
-    <a id= "page-nav-items">
-    items
+    <div class= "category-header">
+      <span class= 'category-title'>
+        <%= link_to "Items in this Access Group:", access_group_items_path(@access_group)%>  
+      </span>
+      <span class= 'new-link'>
+        <%= link_to "Add an Item",new_access_group_item_path(@access_group)%>
+      </span>
+      <a id = "items"></a>
+    </div>
     <% @access_group.items.each do |item|%>
-      <div class= 'show-instance'>
-        <%= item.name%>
+      <div class= 'show-element'>
+        <div class = 'link-to-element'>
+          <%= link_to " ", item%>
+        </div>
+        <div class = 'show-element-flex'>
+          <span class = 'element-title'>
+            <%= item.name%>
+          </span>
+          <span class = 'element-image'>
+            <%= image_tag item.image if item.image.attached? %>
+          </span>
+        </div>
+          <span class = 'element-links'>
+            <%= link_to "Remove", access_group_item_path(@access_group, item), method: :delete %>
+          </span>
+      </div>
+    <% end %>
+  </div>
+
+
+  <div class = "show-category">
+    <div class= "category-header">
+      <span class= 'category-title'>
+        <%= link_to "Users in this Access Group:", access_group_users_path(@access_group)%>  
+      </span>
+      <% if @current_user.can_crud_user_access?(@access_group)%>
+        <span class= 'new-link'>
+          <%= link_to "Add a User",new_access_group_user_path(@access_group)%>
+        </span>
+      <% end %>
+      <a id = "users"></a>
+    </div>
+    <% @access_group.users.each do |user|%>
+      <div class= 'show-element'>
+        <div class = 'link-to-element'>
+          <%= link_to " ", user%>
+        </div>
+        <div class = 'show-element-flex'>
+          <span class = 'element-title'>
+            <%= user.name%>
+          </span>
+          <span class = 'element-image'>
+            <%= image_tag user.image if user.image.attached? %>
+          </span>
+        </div>
+        <% if @current_user.can_crud_user_access?(@access_group) && @current_user!=user%>
+          <span class = 'element-links'>
+            <%= link_to "Remove", access_group_user_path(@access_group, user), method: :delete %>
+          </span>
+        <% end %>
       </div>
     <% end %>
   </div>

@@ -7,9 +7,10 @@
 <% end %>
 <% content_for :card_bottom_tray, flush: true do %>
   <ul>
+    <li><%= yield :indexed_delete_button%></li>
+    <li><%= link_to "Sublocations", location_sublocations_path(location)%></li>
     <li><%= link_to "Access Groups", location_access_groups_path(location)%></li>
     <li><%= link_to 'Items', location_items_path(location)%></li>
-    <li><%= yield :indexed_delete_button%></li>
   <ul>
 <% end %>
 <% content_for :card_image, flush: true do  %>

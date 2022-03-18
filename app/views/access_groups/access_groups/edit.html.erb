@@ -1,19 +1,6 @@
 <%= provide(:title, "Access Group")%>
-<h1>Edit Access Group</h1>
+<%= content_for :header_text, flush: true do %>
+  Edit Access Group
+<% end %>
 
-<%= form_with(model: @access_group, local: true) do |f|%>
-  <%= f.label :name %>
-  <%= f.text_field :name, class: 'form_control',  value: @access_group.name%>
-
-  <%= f.label :description  %>
-  <%= f.text_field :description, class: 'form_control',  value: @access_group.description%>
-
-  <%= f.label :parent_id%>
-  <% if @current_user.can_crud_root_group?%>
-    <%= f.collection_select :parent_id, @access_groups,:id,:name, include_blank: true,  value: @access_group.parent_id %>
-  <% else %>
-    <%= f.collection_select :parent_id,@access_groups,:id,:name,  value: @access_group.parent_id %>
-  <% end %>
-
-  <%= f.submit "Submit", class: "btn btn-primary"%>
-<% end%>
+<%= render 'access_group_form'%>
