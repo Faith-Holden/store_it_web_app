@@ -1,7 +1,6 @@
 ## StoreIt
 StoreIt is an original Ruby on Rails web application,
 created as an inventory management solution for individuals or organizations.
-...
 
 
 
